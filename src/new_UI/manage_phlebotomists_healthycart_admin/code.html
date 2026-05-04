@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#ffb598",
+                    "surface-container-high": "#242c28",
+                    "inverse-primary": "#006c4f",
+                    "on-secondary-fixed-variant": "#3f4850",
+                    "on-tertiary": "#591d00",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#2f3632",
+                    "outline-variant": "#3c4a43",
+                    "inverse-on-surface": "#2a322e",
+                    "surface-container-low": "#161d1a",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed": "#dae3ee",
+                    "on-surface": "#dce4de",
+                    "on-secondary-fixed": "#141c24",
+                    "secondary-fixed-dim": "#bec7d2",
+                    "on-primary-fixed": "#002116",
+                    "on-error": "#690005",
+                    "surface-container": "#1a211d",
+                    "primary-fixed": "#60fcc6",
+                    "outline": "#85948c",
+                    "primary-fixed-dim": "#3adfab",
+                    "on-background": "#dce4de",
+                    "on-tertiary-fixed-variant": "#7b2f09",
+                    "tertiary": "#ffbca2",
+                    "surface-bright": "#333b37",
+                    "inverse-surface": "#dce4de",
+                    "surface-container-lowest": "#08100c",
+                    "on-primary-container": "#004d38",
+                    "on-tertiary-container": "#762b05",
+                    "on-tertiary-fixed": "#370e00",
+                    "secondary-container": "#414a53",
+                    "secondary": "#bec7d2",
+                    "primary-container": "#00c896",
+                    "on-primary": "#003828",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#00513b",
+                    "on-secondary-container": "#b0b9c4",
+                    "primary": "#42e5b0",
+                    "surface": "#0e1511",
+                    "background": "#0e1511",
+                    "surface-tint": "#3adfab",
+                    "tertiary-container": "#ff9467",
+                    "surface-variant": "#2f3632",
+                    "on-secondary": "#29313a",
+                    "on-surface-variant": "#bbcac1",
+                    "surface-dim": "#0e1511",
+                    "tertiary-fixed": "#ffdbce"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "gutter": "12px",
+                    "panel-padding": "16px"
+            },
+            "fontFamily": {
+                    "h2-technical": ["IBM Plex Sans"],
+                    "ui-label-standard": ["DM Sans"],
+                    "ui-label-bold": ["DM Sans"],
+                    "data-display-lg": ["JetBrains Mono"],
+                    "body-regular": ["JetBrains Mono"],
+                    "data-display-sm": ["JetBrains Mono"],
+                    "h1-technical": ["IBM Plex Sans"]
+            },
+            "fontSize": {
+                    "h2-technical": ["18px", {"lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "ui-label-standard": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "ui-label-bold": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "data-display-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-regular": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "data-display-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "h1-technical": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { background-color: #0D1117; color: #dce4de; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0D1117; }
+        ::-webkit-scrollbar-thumb { background: #30363D; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-body-regular text-body-regular selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="bg-[#0D1117] text-[#00C896] font-['IBM_Plex_Sans'] uppercase tracking-wider text-[12px] docked full-width top-0 border-b border-[#30363D] shadow-[0_0_8px_rgba(0,200,150,0.15)] flex justify-between items-center h-14 px-4 w-full z-50 fixed">
+<div class="flex items-center gap-4">
+<span class="text-[#00C896] font-bold tracking-tighter text-lg">HEALTHYCART DISPATCH</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-slate-500">
+<span class="material-symbols-outlined hover:text-[#00C896] transition-colors cursor-pointer">notifications_active</span>
+<span class="material-symbols-outlined hover:text-[#00C896] transition-colors cursor-pointer">settings</span>
+<span class="material-symbols-outlined hover:text-[#00C896] transition-colors cursor-pointer">terminal</span>
+</div>
+<div class="h-8 w-8 rounded-full bg-surface-container overflow-hidden border border-outline-variant">
+<img alt="Dispatcher Profile" data-alt="A professional headshot of a system administrator in a high-tech medical dispatch environment. The lighting is cool-toned with subtle teal bioluminescence reflecting off a clean, dark background. The style is sharp, corporate, and minimalist, echoing a digital command center aesthetic with high information density." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo2Be8QE9TrnObSOa2cC_zXmxE4lzwm14PkHM3NK6yTpZ6neAmxwuRuD7PV2g1f5cDaseL0wdnBj4TZFXpjKj5KlzLavc0GOeaKg1B7oXRWkKGcSMQdy-Vc_MIyutrsCJkQ90JzmxU62CGKVqJPdG6kJdB0nC1nSPhHXFc2vJ2A6ny5enQTJzbSz4NXC-O-4kUPZ6T0DdV2Rxhyu7DM5gdabr4bh7noNha8CfpIV9tbpY9ZAp0yXdZqMSE8LM5uFv5wgaCysb7BMSM"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="bg-[#0D1117] text-[#00C896] font-['IBM_Plex_Sans'] text-sm font-medium fixed left-0 top-14 h-[calc(100vh-3.5rem)] w-[240px] border-r border-[#30363D] flat no-shadows flex flex-col py-4 gap-2 hidden md:flex">
+<div class="px-4 py-2 mb-4">
+<div class="font-bold text-xs tracking-widest text-slate-500 mb-1">OPERATIONS</div>
+<div class="text-[10px] text-slate-600 font-mono">V6.2-STABLE</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all duration-150 rounded group" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all duration-150 rounded group" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span>Live Dispatch</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center gap-3 px-3 py-2 bg-[#161B22] text-[#00C896] border-r-2 border-[#00C896] shadow-[0_0_12px_rgba(0,200,150,0.1)] transition-all duration-150 rounded" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Phlebotomists</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all duration-150 rounded group" href="#">
+<span class="material-symbols-outlined" data-icon="manage_search">manage_search</span>
+<span>History</span>
+</a>
+</nav>
+<div class="px-2 mt-auto border-t border-[#30363D] pt-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all duration-150 rounded group" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all duration-150 rounded group" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-[240px] pt-14 min-h-screen bg-[#0D1117]">
+<div class="p-panel-padding max-w-7xl mx-auto space-y-md">
+<!-- Page Header Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-lg">
+<div class="space-y-xs">
+<h1 class="font-h1-technical text-h1-technical text-on-surface">Phlebotomists</h1>
+<p class="font-ui-label-standard text-on-surface-variant uppercase tracking-widest">Personnel Inventory &amp; Real-time Deployment</p>
+</div>
+<div class="flex flex-wrap items-center gap-sm">
+<!-- Search Filter -->
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">search</span>
+<input class="bg-[#0D1117] border border-[#30363D] rounded px-sm py-2 pl-9 text-[11px] font-mono w-64 focus:border-[#00C896] focus:ring-0 focus:outline-none transition-all placeholder:text-slate-600 uppercase" placeholder="SEARCH OPERATOR ID / NAME" type="text"/>
+</div>
+<!-- Action Button -->
+<button class="bg-primary-container text-on-primary-container font-ui-label-bold px-md py-2 rounded-lg flex items-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(0,200,150,0.2)]">
+<span class="material-symbols-outlined text-sm">person_add</span>
+<span>ADD PHLEBOTOMIST</span>
+</button>
+</div>
+</div>
+<!-- Management Table Container -->
+<div class="bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden shadow-2xl">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-[#30363D] bg-[#0D1117]">
+<th class="px-md py-4 font-ui-label-bold text-slate-500 uppercase tracking-tighter w-16">ID</th>
+<th class="px-md py-4 font-ui-label-bold text-slate-500 uppercase tracking-tighter">Phlebotomist</th>
+<th class="px-md py-4 font-ui-label-bold text-slate-500 uppercase tracking-tighter">Experience</th>
+<th class="px-md py-4 font-ui-label-bold text-slate-500 uppercase tracking-tighter">Service Radius</th>
+<th class="px-md py-4 font-ui-label-bold text-slate-500 uppercase tracking-tighter">Status</th>
+<th class="px-md py-4 font-ui-label-bold text-slate-500 uppercase tracking-tighter text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-data-display-sm text-on-surface">
+<!-- Row 1 -->
+<tr class="hover:bg-[#1c222b] border-b border-[#30363D] transition-colors">
+<td class="px-md py-4 text-slate-500 font-mono text-xs">#PX-901</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded bg-[#0D1117] border border-[#30363D] overflow-hidden">
+<img alt="Felix Chen" data-alt="A focused male phlebotomist in medical scrubs, shown in a high-fidelity digital portrait. The aesthetic is clean and professional with cold blue and teal lighting. The background features a subtle grid pattern typical of a high-end medical software interface. Sharp focus and cinematic depth of field emphasize precision and reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQJ9nn85deInWkmPna6AfXe2CFcfeBKFWUMVsR4TN7eZMl2efJQ1CYbpMLKmxbmQ9Bz5JBCXaLSsHaDWskpW82FtS8-ZKnPOTxajrmNJq7r7xWAIC9ueIa6W0iEmkdFHvyygRbxpvoUQTquUdi4JXNNN_1-7VJmd5MPVfQI_Z6kWtZJvLSAoF3fYuq0um98O_E7l3gmS9y1nkXb6H_lOM3z1Psi0ojiCYvcH-DB_PLFbteXWJoOAAZGoG9crDkxy-jJpu4UKgGCJ2j"/>
+</div>
+<div>
+<div class="font-h2-technical text-sm text-[#00C896]">Felix Chen</div>
+<div class="text-[10px] text-slate-500 font-mono">+1 (555) 012-4492</div>
+</div>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="text-xs font-mono">6.5 YRS</span>
+<div class="w-24 h-1 bg-[#30363D] mt-1 rounded-full overflow-hidden">
+<div class="bg-[#00C896] h-full w-[65%]"></div>
+</div>
+</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-slate-500">distance</span>
+<span class="font-mono text-xs uppercase">12km Cluster</span>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#00c89620] text-[#00C896] border border-[#00C89640] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-md py-4">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 hover:bg-[#30363D] rounded text-slate-400 transition-colors" title="Edit Profile">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-1.5 hover:bg-[#30363D] rounded text-[#00C896] transition-colors" title="Toggle Status">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">toggle_on</span>
+</button>
+<button class="p-1.5 hover:bg-error/10 rounded text-error transition-colors" title="Remove Operator">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-[#0D1117] hover:bg-[#1c222b] border-b border-[#30363D] transition-colors">
+<td class="px-md py-4 text-slate-500 font-mono text-xs">#PX-842</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded bg-[#0D1117] border border-[#30363D] overflow-hidden">
+<img alt="Sarah Miller" data-alt="A professional female phlebotomist in minimalist medical apparel, rendered as a high-quality digital portrait. The lighting is sophisticated, using cool neutral tones with a subtle teal accent. The style is ultra-modern and clinical, set against a dark architectural background that suggests a high-capacity medical logistics center." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMrxNd2ftn9v3dOOtBu3uI6y4_vOt3npHqeZv0_EU3GtGxZsPDGbtJDl2q_KmW_aRlg3RS2t2i9DBW7Vh2NYdJBI5UWfPtRunrJnmHs5vqzGFe9vYuoxH1umxL29yHzLpP1jH4EPRgStJNOXW3je_Uu4oa-YuSHGGw-Wl9bQ10nDGvzmY2iSaVmGYBrqCGJQp67C01Q_lF5uMXtcK5IWYLJJJnUXphbHfKDuAWSBIVEBk6cdlhquO8L9sH7JhjCe6ra0annatkHj3o"/>
+</div>
+<div>
+<div class="font-h2-technical text-sm text-[#00C896]">Sarah Miller</div>
+<div class="text-[10px] text-slate-500 font-mono">+1 (555) 093-8821</div>
+</div>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="text-xs font-mono">12.0 YRS</span>
+<div class="w-24 h-1 bg-[#30363D] mt-1 rounded-full overflow-hidden">
+<div class="bg-[#00C896] h-full w-[95%]"></div>
+</div>
+</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-slate-500">distance</span>
+<span class="font-mono text-xs uppercase">25km Extended</span>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#00c89620] text-[#00C896] border border-[#00C89640] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-md py-4">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 hover:bg-[#30363D] rounded text-slate-400 transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-1.5 hover:bg-[#30363D] rounded text-[#00C896] transition-colors">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">toggle_on</span>
+</button>
+<button class="p-1.5 hover:bg-error/10 rounded text-error transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[#1c222b] border-b border-[#30363D] transition-colors">
+<td class="px-md py-4 text-slate-500 font-mono text-xs">#PX-771</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded bg-[#0D1117] border border-[#30363D] overflow-hidden opacity-50">
+<img alt="Marcus Wade" data-alt="A portrait of a male phlebotomist in professional medical attire, presented in a desaturated, high-contrast digital style. The lighting is low-key, emphasizing a clinical and orderly atmosphere. The background consists of dark, smooth surfaces with thin teal lines, suggesting a futuristic diagnostic dashboard interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAosf2RnvwujKrHwscCzxC_NsMVqd8kVV28LEU8nz-Lnc7SVnIFEbSlALpBtI7r8S96fGk5v8N7_ztawxV6Oa4dg85ykGaReW25HfpBtAIsK2RWFKThhIqKHK89UI7syAgXzLLJArnvP_30nr5hBMOZmbXEc_rrAvAh1AjXnz3_Y3GYq71u-DafVOluCSo0CYPjMRUqWY4t3W7fvSal5HMhYhrcQn_iKojYnkKaj5R2CwozqqtJKD81m1z8kfYn8_BYdAi4U3z-L448"/>
+</div>
+<div>
+<div class="font-h2-technical text-sm text-slate-400">Marcus Wade</div>
+<div class="text-[10px] text-slate-600 font-mono">+1 (555) 221-9003</div>
+</div>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="text-xs font-mono text-slate-500">3.2 YRS</span>
+<div class="w-24 h-1 bg-[#30363D] mt-1 rounded-full overflow-hidden">
+<div class="bg-slate-600 h-full w-[32%]"></div>
+</div>
+</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-1 opacity-50">
+<span class="material-symbols-outlined text-[14px] text-slate-500">distance</span>
+<span class="font-mono text-xs uppercase">5km Local</span>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-surface-container-highest text-slate-500 border border-[#30363D] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                                        Offline
+                                    </span>
+</td>
+<td class="px-md py-4">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 hover:bg-[#30363D] rounded text-slate-400 transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-1.5 hover:bg-[#30363D] rounded text-slate-600 transition-colors">
+<span class="material-symbols-outlined text-sm">toggle_off</span>
+</button>
+<button class="p-1.5 hover:bg-error/10 rounded text-error transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="bg-[#0D1117] hover:bg-[#1c222b] border-b border-[#30363D] transition-colors">
+<td class="px-md py-4 text-slate-500 font-mono text-xs">#PX-655</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded bg-[#0D1117] border border-[#30363D] overflow-hidden">
+<img alt="Elena Rodriguez" data-alt="A portrait of a female medical professional in clean scrubs, lit by crisp surgical-style lighting that produces sharp highlights and deep shadows. The color palette is restricted to dark charcoal and vibrant teal accents. The visual style is sleek and technical, evoking a sense of expertise and modern medical operations management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxOaNmOOUm39kGgB5_B3WdTa3yikFAGq0A-M93NrF8PhfB04TSzADuZoi5gX3IoilwO9lnHB2VWAC49eOgz65xY4HtWkM-e6pJOwBgomIbURaAx947NeWSp2DU7ljdQLXmCMj3SCLgsswBtjRWJwHkx5U4Ab51W9EhPinejyv3sj4VrQbMEWn1aMkrIDN9ASpft2ZEVkKLP14liYR7e6Nw8T4EJsjyRFhp6i74Jm4BUfJ5v8-dJodhrIRuwf0yHk3jLLM5m7Wp9UeC"/>
+</div>
+<div>
+<div class="font-h2-technical text-sm text-[#00C896]">Elena Rodriguez</div>
+<div class="text-[10px] text-slate-500 font-mono">+1 (555) 774-3211</div>
+</div>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="text-xs font-mono">8.0 YRS</span>
+<div class="w-24 h-1 bg-[#30363D] mt-1 rounded-full overflow-hidden">
+<div class="bg-[#00C896] h-full w-[80%]"></div>
+</div>
+</td>
+<td class="px-md py-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-slate-500">distance</span>
+<span class="font-mono text-xs uppercase">15km Sector B</span>
+</div>
+</td>
+<td class="px-md py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#00c89620] text-[#00C896] border border-[#00C89640] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-md py-4">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 hover:bg-[#30363D] rounded text-slate-400 transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-1.5 hover:bg-[#30363D] rounded text-[#00C896] transition-colors">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">toggle_on</span>
+</button>
+<button class="p-1.5 hover:bg-error/10 rounded text-error transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="flex items-center justify-between px-md py-4 bg-[#0D1117] border-t border-[#30363D]">
+<div class="text-[11px] text-slate-500 uppercase tracking-widest font-mono">
+                        Showing 1-4 of 128 operators
+                    </div>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center border border-[#30363D] rounded text-slate-500 hover:text-[#00C896] hover:border-[#00C896] transition-colors disabled:opacity-30 disabled:cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-[#00C896] rounded bg-[#00c89620] text-[#00C896] text-[11px] font-mono">1</button>
+<button class="w-8 h-8 flex items-center justify-center border border-[#30363D] rounded text-slate-500 hover:text-[#00C896] hover:border-[#00C896] transition-colors text-[11px] font-mono">2</button>
+<button class="w-8 h-8 flex items-center justify-center border border-[#30363D] rounded text-slate-500 hover:text-[#00C896] hover:border-[#00C896] transition-colors text-[11px] font-mono">3</button>
+<span class="text-slate-600 text-xs px-1">...</span>
+<button class="w-8 h-8 flex items-center justify-center border border-[#30363D] rounded text-slate-500 hover:text-[#00C896] hover:border-[#00C896] transition-colors text-[11px] font-mono">32</button>
+<button class="w-8 h-8 flex items-center justify-center border border-[#30363D] rounded text-slate-500 hover:text-[#00C896] hover:border-[#00C896] transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Contextual Stats Dashboard (Bottom Section) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mt-lg">
+<div class="bg-[#161B22] border border-[#30363D] p-md rounded-lg flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-ui-label-bold text-slate-500 uppercase tracking-widest text-[10px]">Utilization Rate</span>
+<span class="material-symbols-outlined text-[#00C896] text-lg">monitoring</span>
+</div>
+<div class="mt-4">
+<div class="text-2xl font-mono text-[#00C896]">84.2%</div>
+<p class="text-[10px] text-slate-500 mt-1">PEAK PERFORMANCE CAP</p>
+</div>
+</div>
+<div class="bg-[#161B22] border border-[#30363D] p-md rounded-lg flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-ui-label-bold text-slate-500 uppercase tracking-widest text-[10px]">Average Response</span>
+<span class="material-symbols-outlined text-slate-400 text-lg">timer</span>
+</div>
+<div class="mt-4">
+<div class="text-2xl font-mono text-on-surface">18.5m</div>
+<p class="text-[10px] text-slate-500 mt-1">CLUSTER-WIDE LATENCY</p>
+</div>
+</div>
+<div class="bg-[#161B22] border border-[#30363D] p-md rounded-lg flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-ui-label-bold text-slate-500 uppercase tracking-widest text-[10px]">Incident Free</span>
+<span class="material-symbols-outlined text-[#00C896] text-lg">verified</span>
+</div>
+<div class="mt-4">
+<div class="text-2xl font-mono text-on-surface">99.9%</div>
+<p class="text-[10px] text-slate-500 mt-1">OPERATIONAL INTEGRITY</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

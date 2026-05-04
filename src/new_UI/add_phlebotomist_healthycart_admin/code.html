@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HealthyCart Dispatch - Phlebotomist Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#ffb598",
+                        "surface-container-high": "#242c28",
+                        "inverse-primary": "#006c4f",
+                        "on-secondary-fixed-variant": "#3f4850",
+                        "on-tertiary": "#591d00",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#2f3632",
+                        "outline-variant": "#3c4a43",
+                        "inverse-on-surface": "#2a322e",
+                        "surface-container-low": "#161d1a",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed": "#dae3ee",
+                        "on-surface": "#dce4de",
+                        "on-secondary-fixed": "#141c24",
+                        "secondary-fixed-dim": "#bec7d2",
+                        "on-primary-fixed": "#002116",
+                        "on-error": "#690005",
+                        "surface-container": "#1a211d",
+                        "primary-fixed": "#60fcc6",
+                        "outline": "#85948c",
+                        "primary-fixed-dim": "#3adfab",
+                        "on-background": "#dce4de",
+                        "on-tertiary-fixed-variant": "#7b2f09",
+                        "tertiary": "#ffbca2",
+                        "surface-bright": "#333b37",
+                        "inverse-surface": "#dce4de",
+                        "surface-container-lowest": "#08100c",
+                        "on-primary-container": "#004d38",
+                        "on-tertiary-container": "#762b05",
+                        "on-tertiary-fixed": "#370e00",
+                        "secondary-container": "#414a53",
+                        "secondary": "#bec7d2",
+                        "primary-container": "#00c896",
+                        "on-primary": "#003828",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#00513b",
+                        "on-secondary-container": "#b0b9c4",
+                        "primary": "#42e5b0",
+                        "surface": "#0e1511",
+                        "background": "#0e1511",
+                        "surface-tint": "#3adfab",
+                        "tertiary-container": "#ff9467",
+                        "surface-variant": "#2f3632",
+                        "on-secondary": "#29313a",
+                        "on-surface-variant": "#bbcac1",
+                        "surface-dim": "#0e1511",
+                        "tertiary-fixed": "#ffdbce"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "gutter": "12px",
+                        "panel-padding": "16px"
+                    },
+                    "fontFamily": {
+                        "h2-technical": ["IBM Plex Sans"],
+                        "ui-label-standard": ["DM Sans"],
+                        "ui-label-bold": ["DM Sans"],
+                        "data-display-lg": ["JetBrains Mono"],
+                        "body-regular": ["JetBrains Mono"],
+                        "data-display-sm": ["JetBrains Mono"],
+                        "h1-technical": ["IBM Plex Sans"]
+                    },
+                    "fontSize": {
+                        "h2-technical": ["18px", {"lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "ui-label-standard": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "ui-label-bold": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "data-display-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-regular": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "data-display-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h1-technical": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-regular min-h-screen">
+<!-- Top Navigation Shell -->
+<header class="bg-[#0D1117] text-[#00C896] font-['IBM_Plex_Sans'] uppercase tracking-wider text-[12px] docked full-width top-0 border-b border-[#30363D] shadow-[0_0_8px_rgba(0,200,150,0.15)] flex justify-between items-center h-14 px-4 w-full z-50 fixed">
+<div class="flex items-center gap-4">
+<span class="text-[#00C896] font-bold tracking-tighter text-lg">HEALTHYCART DISPATCH</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="hover:bg-[#161B22] transition-colors p-sm rounded-lg flex items-center">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+</button>
+<button class="hover:bg-[#161B22] transition-colors p-sm rounded-lg flex items-center">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full border border-outline-variant overflow-hidden">
+<img alt="Dispatcher Profile" data-alt="A professional headshot of a technical system administrator in a dark, tech-focused environment. The lighting is low-key with cool teal rim lights that match the clinical minimalist UI aesthetic. The person has a focused expression, representing precision and professional medical logistics management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkBGs5pgYeETcEt_NnMortSRdZx99mRy0tX8I2MhTg_1YZrfPMPBGGRqrB-aeDpbldhpSbYMLUeB20wuFh3JHh-MMzDp8dYMTvnHsYKWKf2fzTU5aVRHg5bDHobnmFieOczbzubaXha5jJJaJtP6G8REv6ytCJLUtDcWy3wV9C0B85n4v4kM7Nm9ExT7lDRQVST3Z5C3iWN31wSGaM4VPvmSrXVbtvydzUpaJhGyC88jTsGfEc515m4kltVDSNndZPdBdTbvzFobQO"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation Shell -->
+<aside class="bg-[#0D1117] font-['IBM_Plex_Sans'] text-sm font-medium fixed left-0 top-0 h-full w-[240px] border-r border-[#30363D] flex flex-col h-full py-4 gap-2 z-40 pt-16">
+<div class="px-md mb-lg">
+<div class="text-[10px] tracking-widest text-slate-500 mb-xs">OPERATIONS</div>
+<div class="text-[10px] font-mono text-primary">V6.2-STABLE</div>
+</div>
+<nav class="flex-1 px-sm space-y-xs">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span>Live Dispatch</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg bg-[#161B22] text-[#00C896] border-r-2 border-[#00C896] shadow-[0_0_12px_rgba(0,200,150,0.1)] transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Phlebotomists</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="manage_search">manage_search</span>
+<span>History</span>
+</a>
+</nav>
+<div class="px-sm mt-auto space-y-xs">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-slate-400 hover:text-slate-100 hover:bg-[#161B22] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] pt-14 p-lg flex flex-col items-center">
+<div class="w-full max-w-[680px] space-y-lg">
+<!-- Header Section -->
+<div class="flex items-center justify-between mb-xl">
+<div>
+<h1 class="font-h1-technical text-h1-technical text-on-surface">ADD PHLEBOTOMIST</h1>
+<p class="font-ui-label-standard text-ui-label-standard text-outline uppercase tracking-widest">System Record Entry: New Personnel</p>
+</div>
+<div class="flex items-center gap-sm bg-surface-container px-md py-sm rounded border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-data-display-sm text-data-display-sm text-primary-container uppercase">Live Entry Mode</span>
+</div>
+</div>
+<form class="space-y-lg">
+<!-- Section: Personal Info -->
+<section class="bg-surface-container p-panel-padding rounded-lg border border-outline-variant relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="person_add">person_add</span>
+<h2 class="font-h2-technical text-h2-technical text-on-surface">PERSONAL INFORMATION</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-gutter flex flex-col items-center justify-center p-md border border-dashed border-outline-variant rounded-lg bg-surface-container-low hover:bg-surface-container-high transition-colors group cursor-pointer">
+<span class="material-symbols-outlined text-3xl text-outline group-hover:text-primary transition-colors" data-icon="cloud_upload">cloud_upload</span>
+<span class="font-ui-label-bold text-ui-label-bold text-outline">UPLOAD PROFILE PHOTO</span>
+<span class="font-ui-label-standard text-[10px] text-slate-500">MAX 2MB .JPG .PNG</span>
+</div>
+<div class="space-y-md">
+<div class="space-y-xs">
+<label class="font-ui-label-bold text-ui-label-bold text-outline uppercase">Full Legal Name</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg px-md py-sm text-on-surface focus:border-primary-container focus:ring-0 font-body-regular transition-all placeholder:text-slate-600" placeholder="Dr. Sarah Miller" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-ui-label-bold text-ui-label-bold text-outline uppercase">Primary Contact</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg px-md py-sm text-on-surface focus:border-primary-container focus:ring-0 font-body-regular transition-all placeholder:text-slate-600" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Specialisations -->
+<section class="bg-surface-container p-panel-padding rounded-lg border border-outline-variant">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="workspace_premium">workspace_premium</span>
+<h2 class="font-h2-technical text-h2-technical text-on-surface">SPECIALISATIONS</h2>
+</div>
+<div class="flex flex-wrap gap-sm">
+<label class="cursor-pointer">
+<input checked="" class="hidden peer" type="checkbox"/>
+<span class="inline-flex items-center px-md py-sm rounded-full border border-primary-container bg-primary-container/10 text-primary-container font-ui-label-bold peer-checked:bg-primary-container peer-checked:text-on-primary transition-all">
+                                PAEDIATRIC
+                            </span>
+</label>
+<label class="cursor-pointer">
+<input class="hidden peer" type="checkbox"/>
+<span class="inline-flex items-center px-md py-sm rounded-full border border-outline-variant bg-surface text-outline font-ui-label-bold peer-checked:bg-primary-container peer-checked:text-on-primary peer-checked:border-primary-container transition-all">
+                                GERIATRIC
+                            </span>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="hidden peer" type="checkbox"/>
+<span class="inline-flex items-center px-md py-sm rounded-full border border-primary-container bg-primary-container/10 text-primary-container font-ui-label-bold peer-checked:bg-primary-container peer-checked:text-on-primary transition-all">
+                                ONCOLOGY
+                            </span>
+</label>
+<label class="cursor-pointer">
+<input class="hidden peer" type="checkbox"/>
+<span class="inline-flex items-center px-md py-sm rounded-full border border-outline-variant bg-surface text-outline font-ui-label-bold peer-checked:bg-primary-container peer-checked:text-on-primary peer-checked:border-primary-container transition-all">
+                                EMERGENCY
+                            </span>
+</label>
+<label class="cursor-pointer">
+<input class="hidden peer" type="checkbox"/>
+<span class="inline-flex items-center px-md py-sm rounded-full border border-outline-variant bg-surface text-outline font-ui-label-bold peer-checked:bg-primary-container peer-checked:text-on-primary peer-checked:border-primary-container transition-all">
+                                RESEARCH
+                            </span>
+</label>
+</div>
+</section>
+<!-- Section: Location -->
+<section class="bg-surface-container p-panel-padding rounded-lg border border-outline-variant">
+<div class="flex items-center justify-between mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="location_on">location_on</span>
+<h2 class="font-h2-technical text-h2-technical text-on-surface">BASE LOCATION</h2>
+</div>
+<div class="bg-surface-container-high px-sm py-[2px] rounded border border-[#30363D] flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="pin_drop">pin_drop</span>
+<span class="font-data-display-sm text-[11px] text-primary">10.0261° N, 76.3083° E</span>
+</div>
+</div>
+<div class="space-y-md">
+<div class="relative">
+<input class="w-full bg-surface border border-outline-variant rounded-lg px-md py-sm text-on-surface focus:border-primary-container focus:ring-0 font-body-regular transition-all" placeholder="Enter dispatcher base address..." type="text"/>
+<button class="absolute right-2 top-1.5 text-primary hover:bg-primary/10 p-1 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="my_location">my_location</span>
+</button>
+</div>
+<div class="h-40 w-full rounded-lg bg-surface-container-lowest border border-outline-variant relative overflow-hidden group">
+<img alt="Map Preview" data-alt="A dark-themed satellite map view of an urban residential grid. The map uses deep blues and charcoal grays, matching the dark UI theme. Centered on the screen is a pulsing teal marker with a subtle luminescence glow, indicating the phlebotomist's base location. The aesthetic is clean and functional, resembling a high-tech dispatch interface." data-location="Kochi, India" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgUoP6o8luaJJTlpZgqkO7ncbjn61piuJpIyIVhxhbl4j7NMt6uaNhY_NYlatdrvWsewJfWzctsmJHqGr5Rpe4CkMjqhpjAdsuzblVHQFRSXc28IvVY696VqVZ3OuzLDfpe2AJCSmsk5CWue7XAc5qgmBmbegeqTB2QHBGRceIA8SlkRXx4wH-A2feQHFlIJVaQCKEfYifEulxjp4iZeAHQguIhzJQSAyt2jkog80k66ADbd-wm4AY_Ej4IGgt_NqPHJNytha2AtL2"/>
+<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+<div class="absolute bottom-2 left-2 bg-surface/80 backdrop-blur-md px-sm py-1 rounded text-[10px] font-mono text-outline border border-outline-variant">
+                                ZOOM: 14.5x | LAT: 10.02 | LNG: 76.30
+                            </div>
+</div>
+</div>
+</section>
+<!-- Section: Service Settings -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="bg-surface-container p-panel-padding rounded-lg border border-outline-variant">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="distance">distance</span>
+<h2 class="font-h2-technical text-h2-technical text-on-surface">SERVICE RADIUS</h2>
+</div>
+<div class="space-y-lg px-xs">
+<div class="flex justify-between font-data-display-sm text-primary">
+<span>5 KM</span>
+<span class="bg-primary/20 px-sm rounded">15 KM</span>
+<span>30 KM</span>
+</div>
+<input class="w-full h-1 bg-surface-container-high rounded-lg appearance-none cursor-pointer accent-primary-container" max="30" min="5" type="range" value="15"/>
+</div>
+</div>
+<div class="bg-surface-container p-panel-padding rounded-lg border border-outline-variant">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="event_available">event_available</span>
+<h2 class="font-h2-technical text-h2-technical text-on-surface">AVAILABILITY</h2>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface rounded border border-outline-variant">
+<span class="font-ui-label-bold text-on-surface">SYSTEM STATUS</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+<span class="ml-3 font-ui-label-standard text-primary">ACTIVE</span>
+</label>
+</div>
+</div>
+</section>
+<!-- Section: Notes -->
+<section class="bg-surface-container p-panel-padding rounded-lg border border-outline-variant">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="sticky_note_2">sticky_note_2</span>
+<h2 class="font-h2-technical text-h2-technical text-on-surface">OPERATIONAL NOTES</h2>
+</div>
+<textarea class="w-full bg-surface border border-outline-variant rounded-lg px-md py-sm text-on-surface focus:border-primary-container focus:ring-0 font-body-regular transition-all placeholder:text-slate-600 resize-none" placeholder="Add specific internal notes about dispatcher capabilities or previous feedback..." rows="3"></textarea>
+</section>
+<!-- Form Actions -->
+<div class="pt-md space-y-md">
+<button class="w-full bg-[#00C896] hover:bg-[#00e0a8] text-black font-ui-label-bold py-md rounded-lg shadow-[0_0_12px_rgba(0,200,150,0.3)] transition-all active:scale-[0.98] flex items-center justify-center gap-sm" type="submit">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                        SAVE PHLEBOTOMIST
+                    </button>
+<div class="flex justify-center">
+<a class="text-slate-500 hover:text-slate-100 font-ui-label-standard underline underline-offset-4 decoration-slate-700 transition-colors" href="#">
+                            Cancel &amp; Return to Dispatcher Queue
+                        </a>
+</div>
+</div>
+</form>
+</div>
+<!-- Footer Info -->
+<footer class="mt-xl text-center space-y-xs opacity-50">
+<p class="font-data-display-sm text-[10px] text-outline uppercase tracking-tighter">HealthyCart Operational Logistics Framework</p>
+<p class="font-data-display-sm text-[10px] text-outline">Terminal ID: DC-04-A | Logged as: sys_admin</p>
+</footer>
+</main>
+</body></html>

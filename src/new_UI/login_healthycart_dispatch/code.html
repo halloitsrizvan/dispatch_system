@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HealthyCart Dispatch - Secure Authentication</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#ffb598",
+                        "surface-container-high": "#242c28",
+                        "inverse-primary": "#006c4f",
+                        "on-secondary-fixed-variant": "#3f4850",
+                        "on-tertiary": "#591d00",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#2f3632",
+                        "outline-variant": "#3c4a43",
+                        "inverse-on-surface": "#2a322e",
+                        "surface-container-low": "#161d1a",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed": "#dae3ee",
+                        "on-surface": "#dce4de",
+                        "on-secondary-fixed": "#141c24",
+                        "secondary-fixed-dim": "#bec7d2",
+                        "on-primary-fixed": "#002116",
+                        "on-error": "#690005",
+                        "surface-container": "#1a211d",
+                        "primary-fixed": "#60fcc6",
+                        "outline": "#85948c",
+                        "primary-fixed-dim": "#3adfab",
+                        "on-background": "#dce4de",
+                        "on-tertiary-fixed-variant": "#7b2f09",
+                        "tertiary": "#ffbca2",
+                        "surface-bright": "#333b37",
+                        "inverse-surface": "#dce4de",
+                        "surface-container-lowest": "#08100c",
+                        "on-primary-container": "#004d38",
+                        "on-tertiary-container": "#762b05",
+                        "on-tertiary-fixed": "#370e00",
+                        "secondary-container": "#414a53",
+                        "secondary": "#bec7d2",
+                        "primary-container": "#00c896",
+                        "on-primary": "#003828",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#00513b",
+                        "on-secondary-container": "#b0b9c4",
+                        "primary": "#42e5b0",
+                        "surface": "#0e1511",
+                        "background": "#0e1511",
+                        "surface-tint": "#3adfab",
+                        "tertiary-container": "#ff9467",
+                        "surface-variant": "#2f3632",
+                        "on-secondary": "#29313a",
+                        "on-surface-variant": "#bbcac1",
+                        "surface-dim": "#0e1511",
+                        "tertiary-fixed": "#ffdbce"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "gutter": "12px",
+                        "panel-padding": "16px"
+                    },
+                    "fontFamily": {
+                        "h2-technical": ["IBM Plex Sans"],
+                        "ui-label-standard": ["DM Sans"],
+                        "ui-label-bold": ["DM Sans"],
+                        "data-display-lg": ["JetBrains Mono"],
+                        "body-regular": ["JetBrains Mono"],
+                        "data-display-sm": ["JetBrains Mono"],
+                        "h1-technical": ["IBM Plex Sans"]
+                    },
+                    "fontSize": {
+                        "h2-technical": ["18px", {"lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "ui-label-standard": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "ui-label-bold": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "data-display-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-regular": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "data-display-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h1-technical": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .ecg-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 5s linear infinite;
+            opacity: 0.15;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: 0; }
+        }
+        .spinner {
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #000;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-[#0D1117] min-h-screen flex items-center justify-center relative overflow-hidden font-body-regular text-on-surface">
+<!-- Background ECG Decoration -->
+<div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+<svg class="ecg-line" fill="none" height="200" viewbox="0 0 1000 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 100H200L220 70L250 130L270 100H400L420 20L450 180L480 100H650L670 85L690 115L710 100H1000" stroke="#00C896" stroke-width="1.5"></path>
+</svg>
+</div>
+<!-- Main Login Container -->
+<main class="relative z-10 w-full max-w-[420px] px-md">
+<div class="bg-[#161B22] border border-[#30363D] shadow-[0_0_24px_rgba(0,200,150,0.05)] rounded-lg overflow-hidden">
+<!-- Branding Header -->
+<div class="px-xl pt-xl pb-lg text-center">
+<div class="flex items-center justify-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-primary-container text-3xl" style="font-variation-settings: 'FILL' 1;">ecg_heart</span>
+<h1 class="font-h1-technical text-h1-technical text-primary-container tracking-tighter">HEALTHYCART</h1>
+</div>
+<p class="font-ui-label-bold text-ui-label-bold text-outline-variant uppercase tracking-widest">Dispatch Center</p>
+</div>
+<!-- Login Form -->
+<form class="px-xl pb-xl space-y-md">
+<!-- Status/Access Message -->
+<div class="bg-surface-container-low border-l-2 border-primary-container p-sm mb-lg flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-container text-[18px]">lock_person</span>
+<span class="font-ui-label-standard text-ui-label-standard text-on-surface-variant">Dispatcher or Admin access only</span>
+</div>
+<!-- Input Groups -->
+<div class="space-y-sm">
+<div class="space-y-xs">
+<label class="font-ui-label-bold text-ui-label-bold text-outline-variant" for="email">SYSTEM EMAIL</label>
+<div class="relative group">
+<span class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-[18px] group-focus-within:text-primary-container">mail</span>
+<input class="w-full bg-[#0D1117] border-[#30363D] text-on-surface font-body-regular text-body-regular pl-xl pr-md py-sm rounded focus:ring-1 focus:ring-primary-container focus:border-primary-container transition-all outline-none" id="email" placeholder="admin@healthycart.dispatch" type="email"/>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-ui-label-bold text-ui-label-bold text-outline-variant" for="password">ACCESS TOKEN</label>
+<div class="relative group">
+<span class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-[18px] group-focus-within:text-primary-container">key</span>
+<input class="w-full bg-[#0D1117] border-[#30363D] text-on-surface font-body-regular text-body-regular pl-xl pr-md py-sm rounded focus:ring-1 focus:ring-primary-container focus:border-primary-container transition-all outline-none" id="password" placeholder="••••••••••••" type="password"/>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-primary-container hover:bg-primary py-md rounded font-ui-label-bold text-ui-label-bold text-on-primary-container flex items-center justify-center gap-sm transition-all active:scale-[0.98] shadow-[0_0_12px_rgba(0,200,150,0.2)]" type="submit">
+<div class="spinner"></div>
+                    AUTHENTICATING...
+                </button>
+<!-- Footer Links -->
+<div class="pt-sm flex justify-between items-center font-ui-label-standard text-ui-label-standard text-slate-500">
+<a class="hover:text-primary-container transition-colors" href="#">Emergency Reset</a>
+<a class="hover:text-primary-container transition-colors" href="#">V6.2 Support</a>
+</div>
+</form>
+</div>
+<!-- System Meta Info -->
+<div class="mt-lg text-center">
+<p class="font-body-regular text-[10px] text-outline-variant uppercase tracking-[0.2em]">
+                Secure Terminal Node: HC-092-DELTA
+            </p>
+<div class="flex justify-center gap-md mt-sm opacity-40">
+<img alt="Security Shield" class="w-4 h-4 grayscale" data-alt="A high-tech digital security shield emblem rendered in a minimalist flat design. The shield is glowing with a soft teal luminescence against a deep charcoal background, symbolizing advanced cybersecurity protection in a professional medical logistics environment. The aesthetic is sharp, clinical, and reassuringly modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu8MP1-Hx0IuoRtPjkuLmscR0wLpq_Krz3IZFSMEbW-zVDF841t5FsBY6AiQ7EZeSsWPuaJ4Z-UfeZSZ7aQGCMob3BUb_8OX0fIac6HkIBd_q9Q3_UAmwuPMEIvW1lBe5G0Pjse-86LyeAh_qBZAr6tHpXhEIZXULo6U1dPt1t_6DL4Ax59pVxzA0iHhsYvUcSAZYkZ2ZBq8n8U8j5msjW-oyKg6NdIENKW4m-3ycRNbDbvI93Qj2e66InHKhXUrNdzIqObQwYKcRZ"/>
+<img alt="Satellite Connection" class="w-4 h-4 grayscale" data-alt="A stylized satellite dish icon emitting concentric signal waves in a vibrant teal color. The visual style is consistent with a high-performance operational dashboard, featuring clean lines and a technical, minimalist aesthetic. It sits against a dark, textured background suggestive of deep space or night-time operations." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChqYGEaKNH1rF8el3HiwV7Boi5VD52RqFwSRcUdqSCNCQJgFcqZe6_MOw6Pt75P269pg8TkhCB1iWy68uN3KlCS_3TAlQ0knWxDheUMexKvGwCkaJiEuhHyvugD-DBnpjW4wwFoxb_nppCnmZJrmu-k4UNF8JLh0Ahd0hNa1ROJWm1gsCBMTtmWJGjGcrLsiMaF_x5O9T_GwBfLjVi6LqJd_RyPmOUb3xEKimQiLqo_NbwAHL0IsBvE1fqzbnjc2vCtms8hxlYyJvF"/>
+</div>
+</div>
+</main>
+<!-- Visual Polish: Corner Data Accents -->
+<div class="fixed top-xl left-xl font-data-display-sm text-data-display-sm text-outline-variant opacity-30 select-none">
+        LOC: GLOBAL_GW<br/>
+        SSL: AES-256-GCM
+    </div>
+<div class="fixed bottom-xl right-xl font-data-display-sm text-data-display-sm text-outline-variant opacity-30 select-none text-right">
+        Uptime: 99.998%<br/>
+        Lat: 24ms
+    </div>
+</body></html>

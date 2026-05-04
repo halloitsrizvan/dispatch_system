@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#ffb598",
+                    "surface-container-high": "#242c28",
+                    "inverse-primary": "#006c4f",
+                    "on-secondary-fixed-variant": "#3f4850",
+                    "on-tertiary": "#591d00",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#2f3632",
+                    "outline-variant": "#3c4a43",
+                    "inverse-on-surface": "#2a322e",
+                    "surface-container-low": "#161d1a",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed": "#dae3ee",
+                    "on-surface": "#dce4de",
+                    "on-secondary-fixed": "#141c24",
+                    "secondary-fixed-dim": "#bec7d2",
+                    "on-primary-fixed": "#002116",
+                    "on-error": "#690005",
+                    "surface-container": "#1a211d",
+                    "primary-fixed": "#60fcc6",
+                    "outline": "#85948c",
+                    "primary-fixed-dim": "#3adfab",
+                    "on-background": "#dce4de",
+                    "on-tertiary-fixed-variant": "#7b2f09",
+                    "tertiary": "#ffbca2",
+                    "surface-bright": "#333b37",
+                    "inverse-surface": "#dce4de",
+                    "surface-container-lowest": "#08100c",
+                    "on-primary-container": "#004d38",
+                    "on-tertiary-container": "#762b05",
+                    "on-tertiary-fixed": "#370e00",
+                    "secondary-container": "#414a53",
+                    "secondary": "#bec7d2",
+                    "primary-container": "#00c896",
+                    "on-primary": "#003828",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#00513b",
+                    "on-secondary-container": "#b0b9c4",
+                    "primary": "#42e5b0",
+                    "surface": "#0e1511",
+                    "background": "#0e1511",
+                    "surface-tint": "#3adfab",
+                    "tertiary-container": "#ff9467",
+                    "surface-variant": "#2f3632",
+                    "on-secondary": "#29313a",
+                    "on-surface-variant": "#bbcac1",
+                    "surface-dim": "#0e1511",
+                    "tertiary-fixed": "#ffdbce"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "gutter": "12px",
+                    "panel-padding": "16px"
+            },
+            "fontFamily": {
+                    "h2-technical": ["IBM Plex Sans"],
+                    "ui-label-standard": ["DM Sans"],
+                    "ui-label-bold": ["DM Sans"],
+                    "data-display-lg": ["JetBrains Mono"],
+                    "body-regular": ["JetBrains Mono"],
+                    "data-display-sm": ["JetBrains Mono"],
+                    "h1-technical": ["IBM Plex Sans"]
+            },
+            "fontSize": {
+                    "h2-technical": ["18px", {"lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "ui-label-standard": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "ui-label-bold": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "data-display-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-regular": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "data-display-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "h1-technical": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #0D1117;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #30363D;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-regular antialiased custom-scrollbar">
+<!-- Top Navigation Shell -->
+<header class="bg-[#0D1117] text-[#00C896] font-['IBM_Plex_Sans'] uppercase tracking-wider text-[12px] docked full-width top-0 border-b border-[#30363D] shadow-[0_0_8px_rgba(0,200,150,0.15)] flex justify-between items-center h-14 px-4 w-full z-50">
+<div class="flex items-center gap-6">
+<div class="text-[#00C896] font-bold tracking-tighter text-lg">HEALTHYCART DISPATCH</div>
+<div class="hidden md:flex gap-4">
+<nav class="flex gap-4">
+<a class="text-[#00C896] border-b-2 border-[#00C896] h-14 flex items-center px-2" href="#">Dashboard</a>
+<a class="text-slate-500 hover:bg-[#161B22] transition-colors h-14 flex items-center px-2" href="#">Live Dispatch</a>
+<a class="text-slate-500 hover:bg-[#161B22] transition-colors h-14 flex items-center px-2" href="#">Phlebotomists</a>
+<a class="text-slate-500 hover:bg-[#161B22] transition-colors h-14 flex items-center px-2" href="#">History</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-[#00C896]">notifications_active</span>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-[#00C896]">settings</span>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-[#00C896]">terminal</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-[#30363D]">
+<img alt="Dispatcher Profile" data-alt="A close-up professional headshot of a medical operations dispatcher in a high-tech control room environment. The subject is a middle-aged man with short hair, wearing a clean, dark navy uniform. The background features soft bokeh with glowing teal and blue indicator lights from server racks and large monitor displays. The lighting is focused and cinematic, highlighting a serious and precise expression suitable for a mission-critical medical environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbQY-majQTMMxucKS1u82kgqhjKtwQLte88bz0nS2ZmYGTHl5GaitYwRmm0Cx8HUc4OImbEbKJzQuvXX2uF2NhHE7faEBSVKLmmWzea4IQ15ajL0vnBxbpTlSI06f6ge-tu5wuYHZ0yFowCS5L8ghnMmF1bcEHmbXhzesfKwVFZtHO4qVuktZN_3n6TuwbF7zm9iCxD86hDcI1fngCLRtgVhO3caK1u8EjBjdu8Jz6twVw3yWI88VXVb8itqscMOgb2nCiyUeopGqU"/>
+</div>
+</div>
+</header>
+<div class="flex min-h-screen pt-14">
+<!-- Sidebar Navigation Shell -->
+<aside class="bg-[#0D1117] font-['IBM_Plex_Sans'] text-sm font-medium fixed left-0 top-14 h-[calc(100vh-3.5rem)] w-[240px] border-r border-[#30363D] flat no-shadows hidden md:flex flex-col py-4 gap-2">
+<div class="px-6 mb-4">
+<div class="text-xs text-slate-500 font-bold tracking-widest uppercase">OPERATIONS</div>
+<div class="text-[10px] text-[#00C896] font-mono">V6.2-STABLE</div>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="bg-[#161B22] text-[#00C896] border-r-2 border-[#00C896] shadow-[0_0_12px_rgba(0,200,150,0.1)] flex items-center gap-3 px-3 py-2.5 transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span>Dashboard</span>
+</a>
+<a class="text-slate-400 hover:text-slate-100 hover:bg-[#161B22] flex items-center gap-3 px-3 py-2.5 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span>Live Dispatch</span>
+</a>
+<a class="text-slate-400 hover:text-slate-100 hover:bg-[#161B22] flex items-center gap-3 px-3 py-2.5 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Phlebotomists</span>
+</a>
+<a class="text-slate-400 hover:text-slate-100 hover:bg-[#161B22] flex items-center gap-3 px-3 py-2.5 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">manage_search</span>
+<span>History</span>
+</a>
+</nav>
+<div class="mt-auto px-3 space-y-1">
+<a class="text-slate-400 hover:text-slate-100 hover:bg-[#161B22] flex items-center gap-3 px-3 py-2.5 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span>Support</span>
+</a>
+<a class="text-slate-400 hover:text-slate-100 hover:bg-[#161B22] flex items-center gap-3 px-3 py-2.5 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 md:ml-[240px] p-md space-y-md">
+<!-- Stats Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Active Phlebotomists -->
+<div class="bg-surface-container border border-outline-variant p-panel-padding flex items-center justify-between">
+<div>
+<div class="text-ui-label-standard text-on-surface-variant uppercase tracking-tighter">Active Phlebotomists</div>
+<div class="text-data-display-lg font-data-display-lg text-primary">18</div>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(0,200,150,0.6)]"></div>
+</div>
+<!-- Today's Assignments -->
+<div class="bg-surface-container border border-outline-variant p-panel-padding">
+<div class="text-ui-label-standard text-on-surface-variant uppercase tracking-tighter">Today's Assignments</div>
+<div class="text-data-display-lg font-data-display-lg text-on-surface">34</div>
+</div>
+<!-- Pending -->
+<div class="bg-surface-container border border-outline-variant p-panel-padding flex items-center justify-between">
+<div>
+<div class="text-ui-label-standard text-on-surface-variant uppercase tracking-tighter">Pending</div>
+<div class="text-data-display-lg font-data-display-lg text-tertiary">3</div>
+</div>
+<div class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+</div>
+<!-- Off Duty -->
+<div class="bg-surface-container border border-outline-variant p-panel-padding">
+<div class="text-ui-label-standard text-on-surface-variant uppercase tracking-tighter">Off Duty</div>
+<div class="text-data-display-lg font-data-display-lg text-error">4</div>
+</div>
+</div>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-10 gap-gutter">
+<!-- Main Left (60%) -->
+<section class="lg:col-span-6 space-y-gutter">
+<div class="bg-surface-container border border-outline-variant">
+<div class="px-panel-padding py-sm border-b border-outline-variant flex justify-between items-center bg-surface-container-high">
+<h2 class="font-h2-technical text-h2-technical uppercase">Recent Assignments</h2>
+<span class="text-ui-label-standard text-primary-container cursor-pointer hover:underline">View All Log</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low">
+<tr class="text-ui-label-bold text-on-surface-variant border-b border-outline-variant">
+<th class="px-panel-padding py-sm uppercase">Patient Area</th>
+<th class="px-panel-padding py-sm uppercase">Phlebotomist</th>
+<th class="px-panel-padding py-sm uppercase">Distance</th>
+<th class="px-panel-padding py-sm uppercase">Assigned At</th>
+<th class="px-panel-padding py-sm uppercase">Dispatcher</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-highest transition-colors border-l-4 border-l-[#00C896]">
+<td class="px-panel-padding py-md font-data-display-sm text-on-surface">Kottooli, KL01</td>
+<td class="px-panel-padding py-md text-ui-label-standard text-on-surface">Rahul V.</td>
+<td class="px-panel-padding py-md font-data-display-sm text-primary">2.4 km</td>
+<td class="px-panel-padding py-md font-data-display-sm">09:42 AM</td>
+<td class="px-panel-padding py-md text-ui-label-standard">SYS_ADMIN</td>
+</tr>
+<tr class="hover:bg-surface-container-highest transition-colors border-l-4 border-l-[#00C896]">
+<td class="px-panel-padding py-md font-data-display-sm text-on-surface">Chevayur, KL08</td>
+<td class="px-panel-padding py-md text-ui-label-standard text-on-surface">Sarah Khan</td>
+<td class="px-panel-padding py-md font-data-display-sm text-primary">1.1 km</td>
+<td class="px-panel-padding py-md font-data-display-sm">09:38 AM</td>
+<td class="px-panel-padding py-md text-ui-label-standard">OPERATOR_02</td>
+</tr>
+<tr class="hover:bg-surface-container-highest transition-colors border-l-4 border-l-[#00C896]">
+<td class="px-panel-padding py-md font-data-display-sm text-on-surface">Medical College, KL11</td>
+<td class="px-panel-padding py-md text-ui-label-standard text-on-surface">Amit Das</td>
+<td class="px-panel-padding py-md font-data-display-sm text-primary">0.5 km</td>
+<td class="px-panel-padding py-md font-data-display-sm">09:35 AM</td>
+<td class="px-panel-padding py-md text-ui-label-standard">SYS_ADMIN</td>
+</tr>
+<tr class="hover:bg-surface-container-highest transition-colors border-l-4 border-l-[#00C896]">
+<td class="px-panel-padding py-md font-data-display-sm text-on-surface">Pantheerankavu, KL04</td>
+<td class="px-panel-padding py-md text-ui-label-standard text-on-surface">Priya M.</td>
+<td class="px-panel-padding py-md font-data-display-sm text-primary">4.2 km</td>
+<td class="px-panel-padding py-md font-data-display-sm">09:30 AM</td>
+<td class="px-panel-padding py-md text-ui-label-standard">OPERATOR_05</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Main Right (40%) -->
+<aside class="lg:col-span-4 space-y-gutter">
+<!-- Quick Dispatch -->
+<div class="bg-surface-container border border-outline-variant p-panel-padding">
+<h3 class="font-h2-technical text-ui-label-bold uppercase mb-md text-on-surface-variant">Quick Dispatch</h3>
+<div class="relative mb-md">
+<input class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary-container focus:ring-0 text-body-regular py-sm pl-md pr-10 rounded" placeholder="Enter patient area to dispatch -&gt;" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-primary">send</span>
+</div>
+<!-- Map Thumbnail -->
+<div class="relative h-[240px] rounded border border-outline-variant overflow-hidden group">
+<img class="w-full h-full object-cover grayscale brightness-50 contrast-125" data-alt="A detailed, high-contrast dark mode digital map of Kozhikode city, Kerala. The map features thin glowing teal lines for main roads and pulse-emitting map pins in bright teal and amber scattered across the urban landscape. The aesthetic is futuristic and clinical, with a deep charcoal background and subtle grid overlays that suggest a high-tech logistics command center interface." data-location="Kozhikode" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh2P6qrGh7_mr72_4xn6tHDvk2ySe_yauKevfKdq5QY2k8TcSa7Z_o7nV-VOXu0yElMN957VbXa2xjd4mWTNawZt5YvziJTjy7f8wWH7Lz4WwZe-GbOKYTQS43nceYKhkDlr9Bqw2QMcBBm_f3g5aPIqjDJDICVDHyruvInrTCYI9OtkvsHneBHRP1qqfXJNR6bGnMAVOSuAcYJaIte9aWmfMiOtBwm6LuentnLYxZNJ_pX2XxWLmN72gMX-HqfyQitp6jzQSsk6Ts"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/80 to-transparent pointer-events-none"></div>
+<!-- Map Overlay Tags -->
+<div class="absolute top-2 left-2 flex gap-1">
+<span class="bg-surface-container-highest/80 backdrop-blur-md px-2 py-0.5 text-[10px] border border-outline-variant font-mono">LIVE_FEED:KOZHIKODE</span>
+</div>
+<!-- Interactive Map Center Pin -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="w-3 h-3 bg-primary rounded-full shadow-[0_0_12px_rgba(0,200,150,0.8)] border border-white/20"></div>
+<div class="mt-2 bg-surface-container-low/90 backdrop-blur-md px-2 py-1 text-[10px] border border-outline-variant">CENTER_ZONE</div>
+</div>
+</div>
+<div class="mt-md flex justify-between items-center">
+<a class="text-ui-label-bold text-primary hover:text-primary-fixed uppercase tracking-wide flex items-center gap-2" href="#">
+                                View all phlebotomists
+                                <span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+<div class="flex -space-x-2">
+<img class="w-6 h-6 rounded-full border border-outline-variant" data-alt="Close-up avatar of a medical professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8ZzAuqiytUmygKh0x0N7zQXPbS0G7KKiNnj0DvR_6ky-79cMCmeEexJ6A4kSE5BRqduskfcaaGVTA_MtHIQEqFFLtzKqvAC7DmhroXrK0XqD7fr50dM39NfBOU5eMx_s1ic9z9G23xvUWgVbEPDKI6lxyICO18uPFWrHmOo03ub1zFvrZG5_CDofy57_9OxFR6YHpr8CZBi8myMpsxWA-UIVVg7uHVov8ZosZho26rZwyJpgn7GPHnmm4Aom7PhI7nosth_dg8ZWP"/>
+<img class="w-6 h-6 rounded-full border border-outline-variant" data-alt="Close-up avatar of a medical professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMaEAIO1Cy04uXdQidPTV3dY7Yn34gcjExAjVv-1PFO5iQpxXQ50XeuTw8tsngU1woK9KUt0Tb_yJgNyUEE5CTfVgA9SME6O4xvB-UvLJ_T4HTQKlClVNucMV4Z7l6nQZKvvbQXI-f-TRIuhfrdzY4jCW1T3nlVoMgfiFqDJ1e0OLlZA2CZeWk1yiqKEXuVtRphRyk0hTypgzYNZTrocxwcR1i3QjLj7OlueFd-qPoJdh_NSKptG0LhIaOMCoycU90k8xyE3XDbD7h"/>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center text-[8px] font-bold">+12</div>
+</div>
+</div>
+</div>
+<!-- System Status Panel -->
+<div class="bg-surface-container border border-outline-variant p-panel-padding">
+<div class="flex items-center justify-between mb-sm">
+<span class="text-ui-label-bold uppercase text-on-surface-variant">System Log</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="space-y-sm font-mono text-[11px]">
+<div class="flex gap-3 text-slate-400">
+<span class="text-primary-fixed-dim shrink-0">[09:44:01]</span>
+<span>DISPATCH_SUCCESS: Rahul V. assigned to Kottooli.</span>
+</div>
+<div class="flex gap-3 text-slate-400">
+<span class="text-primary-fixed-dim shrink-0">[09:42:15]</span>
+<span>SLA_ALERT: Pending request in Chevayur approaching 15m.</span>
+</div>
+<div class="flex gap-3 text-slate-400">
+<span class="text-primary-fixed-dim shrink-0">[09:38:44]</span>
+<span>SYSTEM: Operator 02 logged in.</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<!-- Mobile Bottom Navigation (Suppressed on Web via Tailwind classes in Shell rules) -->
+<footer class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#0D1117] border-t border-[#30363D] flex items-center justify-around z-50">
+<button class="flex flex-col items-center gap-1 text-[#00C896]">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px] font-medium">Dash</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">biotech</span>
+<span class="text-[10px] font-medium">Live</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Team</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">manage_search</span>
+<span class="text-[10px] font-medium">Search</span>
+</button>
+</footer>
+</body></html>

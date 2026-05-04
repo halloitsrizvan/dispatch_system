@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HEALTHYCART DISPATCH - Core Workflow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        /* Custom scrollbar for high-density feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0D1117; }
+        ::-webkit-scrollbar-thumb { background: #30363D; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00C896; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed-dim": "#ffb598",
+                      "surface-container-high": "#242c28",
+                      "inverse-primary": "#006c4f",
+                      "on-secondary-fixed-variant": "#3f4850",
+                      "on-tertiary": "#591d00",
+                      "error-container": "#93000a",
+                      "surface-container-highest": "#2f3632",
+                      "outline-variant": "#3c4a43",
+                      "inverse-on-surface": "#2a322e",
+                      "surface-container-low": "#161d1a",
+                      "on-error-container": "#ffdad6",
+                      "secondary-fixed": "#dae3ee",
+                      "on-surface": "#dce4de",
+                      "on-secondary-fixed": "#141c24",
+                      "secondary-fixed-dim": "#bec7d2",
+                      "on-primary-fixed": "#002116",
+                      "on-error": "#690005",
+                      "surface-container": "#1a211d",
+                      "primary-fixed": "#60fcc6",
+                      "outline": "#85948c",
+                      "primary-fixed-dim": "#3adfab",
+                      "on-background": "#dce4de",
+                      "on-tertiary-fixed-variant": "#7b2f09",
+                      "tertiary": "#ffbca2",
+                      "surface-bright": "#333b37",
+                      "inverse-surface": "#dce4de",
+                      "surface-container-lowest": "#08100c",
+                      "on-primary-container": "#004d38",
+                      "on-tertiary-container": "#762b05",
+                      "on-tertiary-fixed": "#370e00",
+                      "secondary-container": "#414a53",
+                      "secondary": "#bec7d2",
+                      "primary-container": "#00c896",
+                      "on-primary": "#003828",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed-variant": "#00513b",
+                      "on-secondary-container": "#b0b9c4",
+                      "primary": "#42e5b0",
+                      "surface": "#0e1511",
+                      "background": "#0e1511",
+                      "surface-tint": "#3adfab",
+                      "tertiary-container": "#ff9467",
+                      "surface-variant": "#2f3632",
+                      "on-secondary": "#29313a",
+                      "on-surface-variant": "#bbcac1",
+                      "surface-dim": "#0e1511",
+                      "tertiary-fixed": "#ffdbce"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "unit": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "gutter": "12px",
+                      "panel-padding": "16px"
+              },
+              "fontFamily": {
+                      "h2-technical": ["IBM Plex Sans"],
+                      "ui-label-standard": ["DM Sans"],
+                      "ui-label-bold": ["DM Sans"],
+                      "data-display-lg": ["JetBrains Mono"],
+                      "body-regular": ["JetBrains Mono"],
+                      "data-display-sm": ["JetBrains Mono"],
+                      "h1-technical": ["IBM Plex Sans"]
+              },
+              "fontSize": {
+                      "h2-technical": ["18px", {"lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "ui-label-standard": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "ui-label-bold": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "data-display-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "body-regular": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "data-display-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "h1-technical": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-regular selection:bg-primary selection:text-on-primary overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#0D1117] border-b border-[#30363D] shadow-[0_0_8px_rgba(0,200,150,0.15)] flex justify-between items-center h-14 px-4 w-full z-50">
+<div class="flex items-center gap-md">
+<span class="text-[#00C896] font-bold tracking-tighter text-lg">HEALTHYCART DISPATCH</span>
+<div class="hidden md:flex gap-4 ml-8">
+<nav class="flex gap-6">
+<a class="text-[#00C896] border-b-2 border-[#00C896] font-['IBM_Plex_Sans'] uppercase tracking-wider text-[12px] h-14 flex items-center" href="#">Live Dispatch</a>
+<a class="text-slate-500 font-['IBM_Plex_Sans'] uppercase tracking-wider text-[12px] h-14 flex items-center hover:bg-[#161B22] transition-colors" href="#">Dashboard</a>
+<a class="text-slate-500 font-['IBM_Plex_Sans'] uppercase tracking-wider text-[12px] h-14 flex items-center hover:bg-[#161B22] transition-colors" href="#">Phlebotomists</a>
+<a class="text-slate-500 font-['IBM_Plex_Sans'] uppercase tracking-wider text-[12px] h-14 flex items-center hover:bg-[#161B22] transition-colors" href="#">History</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">notifications_active</span>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">settings</span>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">terminal</span>
+<img alt="Dispatcher Profile" class="w-8 h-8 rounded-full border border-outline-variant bg-surface-container" data-alt="A professional close-up profile portrait of a modern dispatcher in a high-tech medical operations center. The person is wearing a sleek dark uniform with subtle teal accents. The background features blurred digital displays and diagnostic interfaces. The lighting is sharp, clinical, and moody, emphasizing a professional and urgent medical environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcjMbMN9fbJJoSEONbVOHXRDnHYjv7HzU5kQmSLa3EIaziRFAE6VgVoKZLuzOBbspHraiQEr5WwXRAUOEhOcUbPqsO5mIh5d8Hf7VDoL6lBNsu1_upZ_ixZLkdMlRV7YHWyJioEBaw55OjWI55D1P01-0zEpZU16Aps-pClU0E8z1saU9g_M9YZXqJUvGyNnbGherhyriUNetQ3bHEjPBHhEQJgk2XjycfC-vL-MOpvx4ppDRjBWr0ll9UoJHF4klILS5snHSVwn-3"/>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar (Suppressed for focused workflow as per guidelines, but keeping structure for layout) -->
+<aside class="hidden lg:flex flex-col h-full w-[240px] border-r border-[#30363D] bg-[#0D1117] py-4 gap-2">
+<div class="px-4 mb-4">
+<div class="text-[10px] text-slate-500 tracking-widest font-bold mb-1">OPERATIONS</div>
+<div class="text-[10px] text-primary bg-primary/10 w-fit px-1 rounded">V6.2-STABLE</div>
+</div>
+<nav class="flex flex-col gap-1 px-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-[#161B22] hover:text-slate-100 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="font-['IBM_Plex_Sans'] text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded bg-[#161B22] text-[#00C896] border-r-2 border-[#00C896] shadow-[0_0_12px_rgba(0,200,150,0.1)]" href="#">
+<span class="material-symbols-outlined text-[20px]">biotech</span>
+<span class="font-['IBM_Plex_Sans'] text-sm font-medium">Live Dispatch</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-[#161B22] hover:text-slate-100 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-['IBM_Plex_Sans'] text-sm font-medium">Phlebotomists</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-[#161B22] hover:text-slate-100 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">manage_search</span>
+<span class="font-['IBM_Plex_Sans'] text-sm font-medium">History</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-1 px-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-[#161B22] transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+<span class="font-['IBM_Plex_Sans'] text-sm font-medium">Support</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:bg-[#161B22] transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="font-['IBM_Plex_Sans'] text-sm font-medium">Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex flex-1 overflow-hidden">
+<!-- Left Panel: Dispatch Workflow -->
+<section class="w-[45%] flex flex-col border-r border-outline-variant bg-surface overflow-y-auto">
+<div class="p-panel-padding flex flex-col gap-lg">
+<!-- Step 1: Patient Location -->
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-xs">
+<span class="bg-primary/20 text-primary px-2 py-0.5 rounded-full text-[10px] font-bold">STEP 1</span>
+<h2 class="font-h2-technical text-h2-technical text-on-surface">PATIENT LOCATION</h2>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-md flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-body-regular text-on-surface">Calicut Medical College Area, Kozhikode</span>
+</div>
+<button class="text-primary hover:underline text-ui-label-bold font-ui-label-bold">CHANGE</button>
+</div>
+</div>
+<!-- Step 2: Compact Filters -->
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-xs">
+<span class="bg-primary/20 text-primary px-2 py-0.5 rounded-full text-[10px] font-bold">STEP 2</span>
+<h2 class="font-h2-technical text-h2-technical text-on-surface">DISPATCH FILTERS</h2>
+</div>
+<div class="grid grid-cols-3 gap-sm">
+<div class="bg-surface-container-low border border-outline-variant p-sm">
+<label class="text-[10px] text-slate-500 block uppercase font-bold mb-1">Distance</label>
+<select class="bg-transparent text-on-surface font-data-display-sm text-data-display-sm w-full border-none p-0 focus:ring-0">
+<option>5-20km</option>
+<option>0-5km</option>
+<option>20km+</option>
+</select>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-sm">
+<label class="text-[10px] text-slate-500 block uppercase font-bold mb-1">Experience</label>
+<select class="bg-transparent text-on-surface font-data-display-sm text-data-display-sm w-full border-none p-0 focus:ring-0">
+<option>0-10yrs</option>
+<option>10yrs+</option>
+</select>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-sm flex items-center justify-between">
+<div>
+<label class="text-[10px] text-slate-500 block uppercase font-bold mb-1">Status</label>
+<span class="text-data-display-sm font-data-display-sm">Available</span>
+</div>
+<div class="w-8 h-4 bg-primary/40 rounded-full relative cursor-pointer">
+<div class="absolute right-0.5 top-0.5 w-3 h-3 bg-primary rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 3: Results List -->
+<div class="flex flex-col gap-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs">
+<span class="bg-primary/20 text-primary px-2 py-0.5 rounded-full text-[10px] font-bold">STEP 3</span>
+<h2 class="font-h2-technical text-h2-technical text-on-surface">PHLEBOTOMISTS FOUND (4)</h2>
+</div>
+<span class="text-ui-label-standard text-slate-500">Live Updates Enabled</span>
+</div>
+<div class="flex flex-col gap-xs">
+<!-- Selected Card -->
+<div class="bg-surface-container-highest border-2 border-primary p-md flex items-center gap-md shadow-[0_0_12px_rgba(0,200,150,0.15)]">
+<div class="w-10 h-10 bg-primary text-background font-bold flex items-center justify-center rounded-sm">RP</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-h2-technical text-h2-technical text-on-surface leading-tight">Rahul Pradeep</h3>
+<span class="font-data-display-sm text-data-display-sm text-primary tracking-tighter">2.4 KM</span>
+</div>
+<div class="flex items-center gap-md mt-1">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+<span class="text-[10px] text-primary font-bold uppercase">Ready</span>
+</div>
+<span class="text-[10px] text-slate-500 font-bold uppercase">6 Yrs Exp</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-slate-400">call</span>
+<span class="text-ui-label-standard text-slate-400">+91 9847...</span>
+</div>
+</div>
+</div>
+<div class="h-10 w-1 bg-primary"></div>
+</div>
+<!-- Other Card 1 -->
+<div class="bg-surface-container border border-outline-variant p-md flex items-center gap-md hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-10 h-10 bg-surface-variant text-on-surface-variant font-bold flex items-center justify-center rounded-sm">AM</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-h2-technical text-h2-technical text-on-surface leading-tight">Anjali Menon</h3>
+<span class="font-data-display-sm text-data-display-sm text-slate-400 tracking-tighter">4.8 KM</span>
+</div>
+<div class="flex items-center gap-md mt-1">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+<span class="text-[10px] text-slate-400 font-bold uppercase">Online</span>
+</div>
+<span class="text-[10px] text-slate-500 font-bold uppercase">3 Yrs Exp</span>
+<button class="ml-auto opacity-0 group-hover:opacity-100 bg-primary text-background px-3 py-1 text-ui-label-bold font-ui-label-bold uppercase transition-all">Select</button>
+</div>
+</div>
+</div>
+<!-- Other Card 2 -->
+<div class="bg-surface-container border border-outline-variant p-md flex items-center gap-md hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-10 h-10 bg-surface-variant text-on-surface-variant font-bold flex items-center justify-center rounded-sm">KV</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-h2-technical text-h2-technical text-on-surface leading-tight">Kiran Varma</h3>
+<span class="font-data-display-sm text-data-display-sm text-slate-400 tracking-tighter">5.1 KM</span>
+</div>
+<div class="flex items-center gap-md mt-1">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
+<span class="text-[10px] text-slate-400 font-bold uppercase">In Transit</span>
+</div>
+<span class="text-[10px] text-slate-500 font-bold uppercase">8 Yrs Exp</span>
+<button class="ml-auto opacity-0 group-hover:opacity-100 bg-primary text-background px-3 py-1 text-ui-label-bold font-ui-label-bold uppercase transition-all">Select</button>
+</div>
+</div>
+</div>
+<!-- Other Card 3 -->
+<div class="bg-surface-container border border-outline-variant p-md flex items-center gap-md hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-10 h-10 bg-surface-variant text-on-surface-variant font-bold flex items-center justify-center rounded-sm">JS</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-h2-technical text-h2-technical text-on-surface leading-tight">James Sunny</h3>
+<span class="font-data-display-sm text-data-display-sm text-slate-400 tracking-tighter">7.2 KM</span>
+</div>
+<div class="flex items-center gap-md mt-1">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+<span class="text-[10px] text-slate-400 font-bold uppercase">Ready</span>
+</div>
+<span class="text-[10px] text-slate-500 font-bold uppercase">4 Yrs Exp</span>
+<button class="ml-auto opacity-0 group-hover:opacity-100 bg-primary text-background px-3 py-1 text-ui-label-bold font-ui-label-bold uppercase transition-all">Select</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Panel: Map View -->
+<section class="w-[55%] relative h-full bg-[#08100C]">
+<!-- Mock Map Implementation -->
+<div class="absolute inset-0 grayscale opacity-40 mix-blend-screen" data-location="Kozhikode, India" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB9GD-RnRBW0rfCy3MFsOf9Hhnpk_1jEE-EvSeIV1Pe-zMpqxfPs0tFiTVl96qC8TE-lw2Nx3l16riy4GYLqSzHDEZFmoNDVM97HUzszsQMpeASc4HXpxFdXUHBZkJPu2fLBiq0NTiuL-Kphg_20s8m0SCdUCFVsb8wqCY3Hblvwxfyv98afk17XdzLsUzHxJUbruI8iyHycSW0qxOfqTyGB0Yc98l7-FZZAxOZOIsUgc47OKuq3DRFbVi6hfOZ4SKUbYF5JCIM_hb9'); background-size: cover; background-position: center;">
+</div>
+<!-- SVG Overlay for Route and Markers -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" viewbox="0 0 800 600">
+<!-- Dashed Route -->
+<path d="M 200,200 Q 300,300 500,400" fill="none" stroke="#00C896" stroke-dasharray="8,4" stroke-width="2"></path>
+<!-- Patient Marker (Pulsing) -->
+<circle cx="500" cy="400" fill="#3B82F6" opacity="0.3" r="12">
+<animate attributename="r" dur="2s" from="12" repeatcount="indefinite" to="24"></animate>
+<animate attributename="opacity" dur="2s" from="0.3" repeatcount="indefinite" to="0"></animate>
+</circle>
+<circle cx="500" cy="400" fill="#3B82F6" r="6"></circle>
+<!-- Phlebotomist Pin (Rahul P) -->
+<g transform="translate(195, 170)">
+<path d="M 5 30 L 0 0 L 10 0 Z" fill="#00C896"></path>
+<circle cx="5" cy="0" fill="#00C896" r="15"></circle>
+<text fill="#0E1511" font-family="DM Sans" font-size="8" font-weight="bold" text-anchor="middle" x="5" y="4">RP</text>
+</g>
+<!-- Other Phlebotomists -->
+<circle cx="120" cy="450" fill="#30363D" r="8"></circle>
+<circle cx="650" cy="150" fill="#30363D" r="8"></circle>
+</svg>
+<!-- Map UI Controls -->
+<div class="absolute top-4 right-4 flex flex-col gap-2">
+<button class="bg-[#161B22] p-2 border border-[#30363D] text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="bg-[#161B22] p-2 border border-[#30363D] text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="bg-[#161B22] p-2 border border-[#30363D] text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+<!-- Patient Location Label on Map -->
+<div class="absolute left-[510px] top-[410px] bg-surface-container border border-outline p-2 shadow-xl">
+<div class="text-[10px] font-bold text-slate-400">PATIENT LOCATION</div>
+<div class="text-ui-label-standard">Calicut Medical College Area</div>
+</div>
+<!-- Success Toast (Bottom Right) -->
+<div class="absolute bottom-24 right-4 bg-surface-container-high border border-primary p-md shadow-2xl flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<div>
+<div class="text-ui-label-bold font-bold text-primary">OPTIMAL ROUTE CALCULATED</div>
+<div class="text-[10px] text-slate-300">ETA: 12 Minutes (via NH 66)</div>
+</div>
+<span class="material-symbols-outlined text-slate-500 text-[16px] ml-4 cursor-pointer">close</span>
+</div>
+</section>
+</main>
+</div>
+<!-- Global Assignment Action Bar -->
+<footer class="h-16 bg-[#0D1117] border-t border-[#30363D] px-xl flex items-center justify-between z-[60]">
+<div class="flex items-center gap-xl">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Currently Assigning</span>
+<div class="flex items-center gap-md">
+<span class="font-h2-technical text-h2-technical text-primary">Rahul Pradeep</span>
+<span class="w-1 h-1 bg-slate-500 rounded-full"></span>
+<span class="font-data-display-sm text-data-display-sm text-slate-300">2.4 km away</span>
+<span class="w-1 h-1 bg-slate-500 rounded-full"></span>
+<span class="font-data-display-sm text-data-display-sm text-slate-300">6 yrs experience</span>
+</div>
+</div>
+<div class="h-8 w-px bg-[#30363D]"></div>
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Estimated SLA</span>
+<span class="font-data-display-sm text-data-display-sm text-on-surface">22 Min Arrival</span>
+</div>
+</div>
+<button class="bg-[#00C896] hover:bg-[#00B085] text-background h-12 px-xl font-ui-label-bold text-lg flex items-center gap-md transition-all active:scale-[0.98]">
+            CONFIRM ASSIGNMENT
+            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</footer>
+<!-- FAB Suppression: Per guidelines, hidden on Detail/Process Screens -->
+</body></html>
