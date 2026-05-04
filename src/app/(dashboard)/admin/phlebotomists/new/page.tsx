@@ -1,18 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import GeocodingInput from "@/components/GeocodingInput";
+import dynamic from "next/dynamic";
+import AddressSearch from "@/components/AddressSearch";
+import { reverseGeocode } from "@/lib/geocode";
+
+// Dynamic import for MiniMapPreview to avoid SSR issues
+const MiniMapPreview = dynamic(() => import("@/components/MiniMapPreview"), {
+  ssr: false,
+  loading: () => <div className="w-full h-[300px] bg-surface-container animate-pulse rounded-lg border border-outline-variant flex items-center justify-center">
+    <span className="text-[10px] font-bold text-outline uppercase tracking-widest">Initialising Preview Map...</span>
+  </div>
+});
 
 export default function NewPhlebotomistPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-  
+  const [locating, setLocating] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -21,12 +32,46 @@ export default function NewPhlebotomistPage() {
     experience: "5",
     radius: 15,
     status: "active",
-    address: "",
-    lng: 0,
-    lat: 0,
+    address: "Detecting location...",
+    lng: 75.7804,
+    lat: 11.2588,
     specialisations: ["PAEDIATRIC", "ONCOLOGY"],
     notes: ""
   });
+
+  // Get current location on mount
+  useEffect(() => {
+    handleGetCurrentLocation();
+  }, []);
+
+  const handleGetCurrentLocation = () => {
+    if (!navigator.geolocation) return;
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      const { latitude, longitude } = pos.coords;
+      try {
+        const address = await reverseGeocode(latitude, longitude);
+        setFormData(prev => ({ ...prev, lat: latitude, lng: longitude, address }));
+      } catch (err) {
+        setFormData(prev => ({ ...prev, lat: latitude, lng: longitude, address: "Location Pinpointed" }));
+      } finally {
+        setLocating(false);
+      }
+    }, () => {
+      setLocating(false);
+      setFormData(prev => ({ ...prev, address: "" }));
+    });
+  };
+
+  const handleMapSelection = async (lat: number, lng: number) => {
+    setFormData(prev => ({ ...prev, lat, lng }));
+    try {
+      const address = await reverseGeocode(lat, lng);
+      setFormData(prev => ({ ...prev, address }));
+    } catch (err) {
+      console.error("Reverse geocode failed");
+    }
+  };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,24 +79,30 @@ export default function NewPhlebotomistPage() {
 
     setUploading(true);
     const formData = new FormData();
+    formData.append("upload_preset", "dispatch_preset");
     formData.append("file", file);
-    formData.append("upload_preset", "dfetresky");
 
     try {
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/healthycart/image/upload`,
+        `https://api.cloudinary.com/v1_1/dfetresky/image/upload`,
         {
           method: "POST",
           body: formData,
         }
       );
+      
       const data = await response.json();
-      if (data.secure_url) {
-        setImageUrl(data.secure_url);
+      console.log("Cloudinary Raw Response:", data);
+
+      if (!response.ok) {
+        throw new Error(data.error?.message || "Cloudinary Upload Failed");
       }
-    } catch (error) {
-      console.error("Upload error:", error);
-      alert("Failed to upload image. Check console for details.");
+
+      setImageUrl(data.secure_url);
+      console.log("Success! Image URL:", data.secure_url);
+    } catch (error: any) {
+      console.error("Upload Detailed Error:", error);
+      alert(`Upload failed: ${error.message}`);
     } finally {
       setUploading(false);
     }
@@ -68,6 +119,10 @@ export default function NewPhlebotomistPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (formData.lat === 0 || formData.lng === 0) {
+      alert("Please select a base location using the address search.");
+      return;
+    }
     setLoading(true);
 
     try {
@@ -108,28 +163,27 @@ export default function NewPhlebotomistPage() {
               <span className="icon text-primary-container text-[20px]">person_add</span>
               <h2 className="font-technical text-[14px] font-bold text-text uppercase tracking-wider">PERSONAL INFORMATION</h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-lg">
               {/* Photo Upload */}
               <div className="relative group">
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  onChange={handleImageUpload} 
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                 />
-                <div className={`h-full min-h-[120px] flex flex-col items-center justify-center p-md border border-dashed rounded-lg transition-all ${
-                  imageUrl ? 'border-primary-container bg-primary-container/5' : 'border-outline-variant bg-background hover:bg-surface-variant'
-                }`}>
+                <div className={`h-full min-h-[120px] flex flex-col items-center justify-center p-md border border-dashed rounded-lg transition-all ${imageUrl ? 'border-primary-container bg-primary-container/5' : 'border-outline-variant bg-background hover:bg-surface-variant'
+                  }`}>
                   {uploading ? (
                     <div className="flex flex-col items-center gap-2">
-                       <div className="w-6 h-6 border-2 border-primary-container border-t-transparent rounded-full animate-spin"></div>
-                       <span className="font-label text-[10px] text-primary-container uppercase font-bold">Uploading...</span>
+                      <div className="w-6 h-6 border-2 border-primary-container border-t-transparent rounded-full animate-spin"></div>
+                      <span className="font-label text-[10px] text-primary-container uppercase font-bold">Uploading...</span>
                     </div>
                   ) : imageUrl ? (
                     <div className="relative w-full h-full flex flex-col items-center">
-                       <img src={imageUrl} alt="Profile" className="w-20 h-20 rounded-full object-cover border-2 border-primary-container mb-2" />
-                       <span className="font-label text-[10px] text-primary-container uppercase font-bold">Photo Linked</span>
+                      <img src={imageUrl} alt="Profile" className="w-20 h-20 rounded-full object-cover border-2 border-primary-container mb-2" />
+                      <span className="font-label text-[10px] text-primary-container uppercase font-bold">Photo Linked</span>
                     </div>
                   ) : (
                     <>
@@ -144,24 +198,24 @@ export default function NewPhlebotomistPage() {
               <div className="space-y-md">
                 <div className="space-y-xs">
                   <label className="font-label text-[11px] text-outline uppercase font-bold">Full Legal Name</label>
-                  <input 
+                  <input
                     type="text"
                     required
                     className="w-full bg-background border border-outline-variant rounded-lg px-md py-sm text-text focus:border-primary-container outline-none font-data text-[13px] transition-all"
-                    placeholder="Dr. Sarah Miller"
+                    placeholder="e.g. Rahul V."
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
                 </div>
                 <div className="space-y-xs">
                   <label className="font-label text-[11px] text-outline uppercase font-bold">Primary Contact</label>
-                  <input 
+                  <input
                     type="tel"
                     required
                     className="w-full bg-background border border-outline-variant rounded-lg px-md py-sm text-text focus:border-primary-container outline-none font-data text-[13px] transition-all"
-                    placeholder="+1 (555) 000-0000"
+                    placeholder="+91 00000 00000"
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   />
                 </div>
               </div>
@@ -180,11 +234,10 @@ export default function NewPhlebotomistPage() {
                   key={spec}
                   type="button"
                   onClick={() => toggleSpecialisation(spec)}
-                  className={`px-md py-sm rounded-full border transition-all font-label text-[11px] font-bold tracking-wider ${
-                    formData.specialisations.includes(spec)
+                  className={`px-md py-sm rounded-full border transition-all font-label text-[11px] font-bold tracking-wider ${formData.specialisations.includes(spec)
                       ? "border-primary-container bg-primary-container/10 text-primary-container shadow-[0_0_8px_rgba(0,200,150,0.2)]"
                       : "border-outline-variant bg-background text-outline hover:border-outline"
-                  }`}
+                    }`}
                 >
                   {spec}
                 </button>
@@ -199,26 +252,40 @@ export default function NewPhlebotomistPage() {
                 <span className="icon text-primary-container text-[20px]">location_on</span>
                 <h2 className="font-technical text-[14px] font-bold text-text uppercase tracking-wider">BASE LOCATION</h2>
               </div>
-              <div className="bg-background px-sm py-[2px] rounded border border-outline-variant flex items-center gap-xs">
-                <span className="icon text-[14px] text-primary-container">pin_drop</span>
-                <span className="font-data text-[10px] text-primary-container">
-                  {formData.lat.toFixed(4)}° N, {formData.lng.toFixed(4)}° E
-                </span>
+              <div className="flex items-center gap-md">
+                <button 
+                  type="button"
+                  onClick={handleGetCurrentLocation}
+                  disabled={locating}
+                  className="flex items-center gap-xs bg-primary-container/10 px-sm py-[2px] rounded border border-primary-container/20 hover:bg-primary-container/20 transition-colors"
+                >
+                  <span className={`icon text-[14px] text-primary-container ${locating ? 'animate-spin' : ''}`}>my_location</span>
+                  <span className="font-data text-[10px] text-primary-container uppercase">{locating ? 'Detecting...' : 'Current Location'}</span>
+                </button>
+                <div className="bg-background px-sm py-[2px] rounded border border-outline-variant flex items-center gap-xs">
+                  <span className="icon text-[14px] text-primary-container">pin_drop</span>
+                  <span className="font-data text-[10px] text-primary-container">
+                    {formData.lat.toFixed(4)}° N, {formData.lng.toFixed(4)}° E
+                  </span>
+                </div>
               </div>
             </div>
             <div className="space-y-md">
-              <GeocodingInput 
+              <AddressSearch 
                 initialValue={formData.address}
-                onSelect={(lng, lat, address) => setFormData({...formData, lng, lat, address})}
-                placeholder="Enter dispatcher base address..."
+                onSelect={(result) => setFormData({
+                  ...formData, 
+                  lng: result.lng, 
+                  lat: result.lat, 
+                  address: result.display_name
+                })}
               />
-              <div className="h-40 w-full rounded-lg bg-background border border-outline-variant relative overflow-hidden group">
-                 <div className="absolute inset-0 bg-[url('https://lh3.googleusercontent.com/aida-public/AB6AXuAgUoP6o8luaJJTlpZgqkO7ncbjn61piuJpIyIVhxhbl4j7NMt6uaNhY_NYlatdrvWsewJfWzctsmJHqGr5Rpe4CkMjqhpjAdsuzblVHQFRSXc28IvVY696VqVZ3OuzLDfpe2AJCSmsk5CWue7XAc5qgmBmbegeqTB2QHBGRceIA8SlkRXx4wH-A2feQHFlIJVaQCKEfYifEulxjp4iZeAHQguIhzJQSAyt2jkog80k66ADbd-wm4AY_Ej4IGgt_NqPHJNytha2AtL2')] bg-cover bg-center grayscale brightness-50 contrast-125 transition-all duration-700"></div>
-                 <div className="absolute inset-0 bg-primary-container/5 pointer-events-none"></div>
-                 <div className="absolute bottom-2 left-2 bg-background/80 backdrop-blur-md px-sm py-1 rounded text-[9px] font-data text-outline border border-outline-variant uppercase">
-                    ZOOM: 14.5x | Secure Node: {formData.address.slice(0, 20)}...
-                 </div>
-              </div>
+              <MiniMapPreview 
+                lat={formData.lat} 
+                lng={formData.lng} 
+                radius={formData.radius}
+                onLocationSelect={handleMapSelection}
+              />
             </div>
           </section>
 
@@ -235,17 +302,17 @@ export default function NewPhlebotomistPage() {
                   <span className="bg-primary-container/20 px-sm rounded font-bold">{formData.radius} KM</span>
                   <span>30 KM</span>
                 </div>
-                <input 
-                  type="range" 
-                  min="5" 
-                  max="30" 
+                <input
+                  type="range"
+                  min="5"
+                  max="30"
                   className="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary-container"
                   value={formData.radius}
-                  onChange={(e) => setFormData({...formData, radius: parseInt(e.target.value)})}
+                  onChange={(e) => setFormData({ ...formData, radius: parseInt(e.target.value) })}
                 />
               </div>
             </div>
-            
+
             <div className="bg-surface-container p-lg rounded-lg border border-outline-variant shadow-glow">
               <div className="flex items-center gap-sm mb-md">
                 <span className="icon text-primary-container text-[20px]">event_available</span>
@@ -253,11 +320,10 @@ export default function NewPhlebotomistPage() {
               </div>
               <div className="flex items-center justify-between p-sm bg-background rounded border border-outline-variant">
                 <span className="font-label text-[11px] text-text uppercase font-bold tracking-widest">System Status</span>
-                <div 
-                  className={`px-md py-1 rounded-full text-[10px] font-bold cursor-pointer transition-all ${
-                    formData.status === 'active' ? 'bg-primary-container text-on-primary-container' : 'bg-surface-variant text-outline'
-                  }`}
-                  onClick={() => setFormData({...formData, status: formData.status === 'active' ? 'inactive' : 'active'})}
+                <div
+                  className={`px-md py-1 rounded-full text-[10px] font-bold cursor-pointer transition-all ${formData.status === 'active' ? 'bg-primary-container text-on-primary-container' : 'bg-surface-variant text-outline'
+                    }`}
+                  onClick={() => setFormData({ ...formData, status: formData.status === 'active' ? 'inactive' : 'active' })}
                 >
                   {formData.status === 'active' ? 'ONLINE' : 'OFFLINE'}
                 </div>
@@ -271,23 +337,22 @@ export default function NewPhlebotomistPage() {
               <span className="icon text-primary-container text-[20px]">sticky_note_2</span>
               <h2 className="font-technical text-[14px] font-bold text-text uppercase tracking-wider">OPERATIONAL NOTES</h2>
             </div>
-            <textarea 
+            <textarea
               className="w-full bg-background border border-outline-variant rounded-lg px-md py-sm text-text focus:border-primary-container outline-none font-data text-[13px] transition-all resize-none"
               placeholder="Add specific internal notes about operative capabilities..."
               rows={3}
               value={formData.notes}
-              onChange={(e) => setFormData({...formData, notes: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
             ></textarea>
           </section>
 
           {/* Form Actions */}
           <div className="pt-md space-y-md">
-            <button 
+            <button
               type="submit"
               disabled={loading || uploading}
-              className={`w-full bg-primary-container hover:bg-primary text-on-primary-container font-label text-[13px] font-bold py-lg rounded-lg shadow-[0_0_12px_rgba(0,200,150,0.3)] transition-all active:scale-[0.98] flex items-center justify-center gap-sm uppercase tracking-[0.2em] ${
-                (loading || uploading) ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
+              className={`w-full bg-primary-container hover:bg-primary text-on-primary-container font-label text-[13px] font-bold py-lg rounded-lg shadow-[0_0_12px_rgba(0,200,150,0.3)] transition-all active:scale-[0.98] flex items-center justify-center gap-sm uppercase tracking-[0.2em] ${(loading || uploading) ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
             >
               <span className="icon">{loading ? 'sync' : 'save'}</span>
               {loading ? 'Transmitting Data...' : 'SAVE OPERATIVE RECORD'}

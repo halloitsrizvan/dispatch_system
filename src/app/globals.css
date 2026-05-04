@@ -160,3 +160,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Fix Leaflet default marker icons in Next.js */
+.leaflet-default-icon-path {
+  background-image: url(/leaflet/marker-icon.png);
+}
+
+.leaflet-container {
+  z-index: 1;
+}
