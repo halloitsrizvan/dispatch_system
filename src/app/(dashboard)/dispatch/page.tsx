@@ -15,6 +15,7 @@ const MapPanel = dynamic(() => import("@/components/MapPanel"), {
 });
 
 import { calculateDistance } from "@/lib/geo";
+import { reverseGeocode } from "@/lib/geocode";
 
 export default function DispatchPage() {
   const [patientArea, setPatientArea] = useState("");
@@ -44,6 +45,16 @@ export default function DispatchPage() {
     }
     return { ...p, distance: Infinity };
   }).sort((a, b) => a.distance - b.distance);
+
+  const handleMapSelection = async (lat: number, lng: number) => {
+    setPatientCoords({ lat, lng });
+    try {
+      const address = await reverseGeocode(lat, lng);
+      setPatientArea(address);
+    } catch (err) {
+      console.error("Reverse geocode failed");
+    }
+  };
 
   const handleDispatch = async () => {
     if (!selectedPhleb || !patientArea) {
@@ -75,17 +86,20 @@ export default function DispatchPage() {
   };
 
   return (
-    <div className="dispatch-page h-[calc(100vh-10rem)] flex flex-col gap-lg animate-fade-in">
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-10 gap-lg overflow-hidden">
+    <div className="dispatch-page lg:h-[calc(100vh-10rem)] flex flex-col gap-lg animate-fade-in overflow-y-auto lg:overflow-hidden p-xs sm:p-0">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-10 gap-lg overflow-hidden lg:overflow-hidden">
         {/* Left Panel: Unit Selection (40%) */}
-        <section className="lg:col-span-4 flex flex-col gap-lg overflow-hidden">
+        <section className="order-2 lg:order-1 lg:col-span-4 flex flex-col gap-lg min-h-[400px] lg:h-full overflow-hidden">
           <div className="bg-surface-container border border-outline-variant p-lg rounded-xl shadow-glow space-y-md">
             <div className="space-y-xs">
               <label className="text-[10px] font-black text-outline uppercase tracking-[0.2em] px-1">Target Patient Area</label>
-              <AddressSearch onSelect={(result) => {
-                setPatientArea(result.display_name);
-                setPatientCoords({ lat: result.lat, lng: result.lng });
-              }} />
+              <AddressSearch 
+                initialValue={patientArea}
+                onSelect={(result) => {
+                  setPatientArea(result.display_name);
+                  setPatientCoords({ lat: result.lat, lng: result.lng });
+                }} 
+              />
               {patientCoords && (
                 <div className="flex items-center gap-2 mt-2 px-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_8px_rgba(0,200,150,0.5)]"></span>
@@ -156,14 +170,15 @@ export default function DispatchPage() {
         </section>
 
         {/* Right Panel: Map & Dispatch (60%) */}
-        <section className="lg:col-span-6 bg-surface-container border border-outline-variant rounded-xl overflow-hidden relative flex flex-col shadow-glow">
-          <div className="flex-1 relative">
+        <section className="order-1 lg:order-2 lg:col-span-6 bg-surface-container border border-outline-variant rounded-xl overflow-hidden relative flex flex-col shadow-glow min-h-[400px] lg:h-full">
+          <div className="flex-1 relative min-h-[300px]">
             <MapPanel 
               patientLat={patientCoords?.lat} 
               patientLng={patientCoords?.lng}
               phlebotomists={phlebotomists} 
               selectedId={selectedPhleb?.id}
               onSelectPhlebotomist={(id) => setSelectedPhleb(phlebotomists.find(p => p.id === id))}
+              onLocationSelect={handleMapSelection}
             />
             
             {/* Map Overlay Info */}
@@ -172,7 +187,7 @@ export default function DispatchPage() {
                 <span className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_rgba(0,200,150,1)]"></span>
                 SITUATIONAL DATA
               </div>
-              <p className="text-[11px] text-outline font-data leading-relaxed opacity-80">Distribution based on proximity and operational bandwidth.</p>
+              <p className="text-[11px] text-outline font-data leading-relaxed opacity-80">Click anywhere on the map to set target area and re-calculate proximity.</p>
             </div>
           </div>
 

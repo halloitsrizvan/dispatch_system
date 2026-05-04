@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, onSnapshot, query, orderBy, limit, addDoc, serverTimestamp, where } from "firebase/firestore";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import AddressSearch from "@/components/AddressSearch";
@@ -16,6 +17,7 @@ const MapPanel = dynamic(() => import("@/components/MapPanel"), {
 });
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [stats, setStats] = useState({
     active: 0,
     assignments: 0,
@@ -51,7 +53,7 @@ export default function DashboardPage() {
       setStats(prev => ({
         ...prev,
         assignments: snapshot.size,
-        pending: data.filter(a => a.status === "pending").length
+        pending: data.filter((a: any) => a.status === "pending").length
       }));
     });
 
@@ -107,7 +109,7 @@ export default function DashboardPage() {
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-lg">
         {/* Main Left (60%) */}
-        <section className="lg:col-span-6 space-y-lg">
+        <section className="lg:col-span-6 space-y-lg overflow-hidden">
           <div className="bg-surface-container border border-outline-variant rounded-xl overflow-hidden shadow-glow">
             <div className="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface-container-high/50">
               <div className="flex items-center gap-sm">
@@ -115,11 +117,11 @@ export default function DashboardPage() {
                 <h2 className="font-technical text-[14px] font-bold text-text uppercase tracking-widest">RECENT ASSIGNMENTS</h2>
               </div>
               <Link href="/dispatch" className="text-[10px] text-primary-container font-bold uppercase hover:underline flex items-center gap-xs">
-                GO TO TERMINAL <span className="icon text-[12px]">open_in_new</span>
+                TERMINAL <span className="icon text-[12px]">open_in_new</span>
               </Link>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+            <div className="overflow-x-auto custom-scrollbar">
+              <table className="w-full text-left border-collapse min-w-[500px]">
                 <thead className="bg-surface-container-low/50">
                   <tr className="text-[10px] text-outline-variant uppercase font-bold border-b border-outline-variant">
                     <th className="px-lg py-md">Patient Area</th>
@@ -129,12 +131,16 @@ export default function DashboardPage() {
                 </thead>
                 <tbody className="divide-y divide-outline-variant/30">
                   {recentAssignments.map((assignment) => (
-                    <tr key={assignment.id} className="hover:bg-surface-variant/30 transition-colors group">
-                      <td className="px-lg py-md">
-                        <div className="font-data text-[13px] text-text group-hover:text-primary-container transition-colors">{assignment.patientArea}</div>
+                    <tr 
+                      key={assignment.id} 
+                      onClick={() => router.push(`/dashboard/assignments/${assignment.id}`)}
+                      className="hover:bg-surface-variant/30 transition-colors group cursor-pointer"
+                    >
+                      <td className="px-lg py-md max-w-[200px]">
+                        <div className="font-data text-[13px] text-text group-hover:text-primary-container transition-colors truncate">{assignment.patientArea}</div>
                       </td>
                       <td className="px-lg py-md">
-                        <div className="text-[13px] text-outline font-medium">{assignment.phlebName}</div>
+                        <div className="text-[13px] text-outline font-medium truncate">{assignment.phlebName}</div>
                       </td>
                       <td className="px-lg py-md text-right">
                         <div className="flex flex-col items-end gap-1">
@@ -157,7 +163,7 @@ export default function DashboardPage() {
                       <td colSpan={3} className="px-lg py-xl text-center">
                         <div className="flex flex-col items-center gap-2 opacity-30">
                           <span className="icon text-3xl">inbox</span>
-                          <span className="font-data text-[11px] uppercase tracking-widest font-bold">No active records in current cycle</span>
+                          <span className="font-data text-[11px] uppercase tracking-widest font-bold">No records found</span>
                         </div>
                       </td>
                     </tr>
@@ -177,7 +183,7 @@ export default function DashboardPage() {
                 <span className="icon text-primary-container text-[20px]">terminal</span>
                 QUICK DISPATCH
               </h3>
-              <span className="text-[9px] font-data text-primary-container bg-primary-container/10 px-2 py-0.5 rounded">LIVE_LINK</span>
+              <span className="text-[9px] font-data text-primary-container bg-primary-container/10 px-2 py-0.5 rounded">LIVE</span>
             </div>
             
             <div className="space-y-md">
@@ -208,7 +214,7 @@ export default function DashboardPage() {
                   phlebotomists={phlebotomists} 
                 />
                 <div className="absolute top-3 left-3 flex gap-2 z-[1000] pointer-events-none">
-                  <span className="bg-background/80 backdrop-blur-md px-2 py-1 text-[9px] border border-outline-variant font-data text-primary-container uppercase tracking-tight rounded">TACTICAL_GRID:LIVE</span>
+                  <span className="bg-background/80 backdrop-blur-md px-2 py-1 text-[9px] border border-outline-variant font-data text-primary-container uppercase tracking-tight rounded">GRID:LIVE</span>
                 </div>
               </div>
             </div>
@@ -218,7 +224,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-md">
               <h3 className="font-technical text-[12px] font-bold text-outline uppercase tracking-widest flex items-center gap-2">
                 <span className="icon text-[18px]">analytics</span>
-                SYSTEM PULSE
+                PULSE
               </h3>
               <div className="flex items-center gap-1.5">
                 <span className="text-[9px] font-bold text-primary-container uppercase">NOMINAL</span>
@@ -228,15 +234,15 @@ export default function DashboardPage() {
             <div className="space-y-3 font-data text-[10px] text-outline-variant">
               <div className="flex gap-4 items-start group hover:text-outline transition-colors">
                 <span className="text-primary-container shrink-0 font-bold tracking-tighter opacity-80">[{new Date().toLocaleTimeString([], {hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit'})}]</span>
-                <span className="leading-relaxed">OPERATIVE_SYNC: {stats.active} units verified. Channel stable.</span>
-              </div>
-              <div className="flex gap-4 items-start group hover:text-outline transition-colors">
-                <span className="text-primary-container shrink-0 font-bold tracking-tighter opacity-80">[{new Date().toLocaleTimeString([], {hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit', millisecond: undefined})}]</span>
-                <span className="leading-relaxed">LEAFLET_ENGINE: Active. Tileset: DarkMatter.</span>
+                <span className="leading-relaxed">OPERATIVE_SYNC: {stats.active} units.</span>
               </div>
               <div className="flex gap-4 items-start group hover:text-outline transition-colors">
                 <span className="text-primary-container shrink-0 font-bold tracking-tighter opacity-80">[{new Date().toLocaleTimeString([], {hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit'})}]</span>
-                <span className="leading-relaxed">SLA_MONITOR: All response times within 60s threshold.</span>
+                <span className="leading-relaxed">LEAFLET_ENGINE: Active.</span>
+              </div>
+              <div className="flex gap-4 items-start group hover:text-outline transition-colors">
+                <span className="text-primary-container shrink-0 font-bold tracking-tighter opacity-80">[{new Date().toLocaleTimeString([], {hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit'})}]</span>
+                <span className="leading-relaxed">SLA_MONITOR: Stable.</span>
               </div>
             </div>
           </div>

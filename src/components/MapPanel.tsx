@@ -70,6 +70,7 @@ interface MapPanelProps {
   phlebotomists: Phlebotomist[]
   selectedId?: string | null
   onSelectPhlebotomist?: (id: string) => void
+  onLocationSelect?: (lat: number, lng: number) => void
 }
 
 export default function MapPanel({
@@ -78,6 +79,7 @@ export default function MapPanel({
   phlebotomists,
   selectedId,
   onSelectPhlebotomist,
+  onLocationSelect,
 }: MapPanelProps) {
   const mapRef = useRef<L.Map | null>(null)
   const mapContainerRef = useRef<HTMLDivElement>(null)
@@ -104,9 +106,15 @@ export default function MapPanel({
       }
     ).addTo(map)
 
+    // Handle map click for location selection
+    map.on('click', (e: L.LeafletMouseEvent) => {
+      onLocationSelect?.(e.latlng.lat, e.latlng.lng);
+    });
+
     mapRef.current = map
 
     return () => {
+      map.off('click');
       map.remove()
       mapRef.current = null
     }

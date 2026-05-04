@@ -1,28 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { db } from "@/lib/firebase";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import "./history.css";
-
-// Mock Data
-const MOCK_HISTORY = [
-  { id: "1", area: "Kozhikode Beach", phlebotomist: "Rahul K.", dispatcher: "admin@hc.dispatch", time: "2024-05-01 10:30 AM", notes: "Urgent collection" },
-  { id: "2", area: "Mavoor Road", phlebotomist: "Anjali M.", dispatcher: "sarah@hc.dispatch", time: "2024-05-01 11:15 AM", notes: "Geriatric patient" },
-  { id: "3", area: "Nadakkavu", phlebotomist: "Suresh P.", dispatcher: "admin@hc.dispatch", time: "2024-04-30 02:45 PM", notes: "" },
-  { id: "4", area: "Kallayi", phlebotomist: "Deepa V.", dispatcher: "john@hc.dispatch", time: "2024-04-30 04:20 PM", notes: "Pediatric case" },
-  { id: "5", area: "Palayam", phlebotomist: "Arun J.", dispatcher: "admin@hc.dispatch", time: "2024-04-30 05:00 PM", notes: "" },
-];
 
 export default function HistoryPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [assignments, setAssignments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const q = query(collection(db, "assignments"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setAssignments(data);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const filteredHistory = assignments.filter(h => 
+    h.patientArea?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    h.phlebName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    h.status?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const exportCSV = () => {
-    const headers = ["Area", "Phlebotomist", "Dispatcher", "Time", "Notes"];
-    const rows = MOCK_HISTORY.map(h => [h.area, h.phlebotomist, h.dispatcher, h.time, h.notes]);
+    const headers = ["Area", "Phlebotomist", "Status", "Time"];
+    const rows = filteredHistory.map(h => [
+      h.patientArea, 
+      h.phlebName, 
+      h.status, 
+      h.createdAt?.toDate ? new Date(h.createdAt.toDate()).toLocaleString() : "..."
+    ]);
     const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "hc_dispatch_history.csv";
+    link.download = `hc_dispatch_history_${new Date().toISOString().split('T')[0]}.csv`;
     link.click();
   };
 
@@ -33,63 +53,73 @@ export default function HistoryPage() {
           <span className="icon" style={{ fontSize: '18px', color: 'var(--primary-container)' }}>search</span>
           <input 
             type="text" 
-            placeholder="Filter by area, unit, or dispatcher..." 
+            placeholder="Search by area, unit, or status..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="filter-group">
           <div className="filter-select">
-            <span className="icon" style={{ fontSize: '16px' }}>calendar_month</span>
-            <select><option>LAST 24 HOURS</option></select>
+            <span className="icon" style={{ fontSize: '16px' }}>history</span>
+            <span className="text-[10px] font-bold text-outline uppercase ml-2">Total Records: {assignments.length}</span>
           </div>
           <button onClick={exportCSV} className="export-btn">
             <span className="icon" style={{ fontSize: '18px' }}>download</span>
-            EXPORT LOG
+            EXPORT CSV
           </button>
         </div>
       </section>
 
       <section className="table-card glass">
         <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Operational Area</th>
-                <th>Assigned Unit</th>
-                <th>Dispatcher ID</th>
-                <th>Timestamp</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_HISTORY.map((h) => (
-                <tr key={h.id}>
-                  <td>
-                    <div className="area-cell">
-                      <span className="icon" style={{ fontSize: '14px' }}>location_on</span>
-                      <span>{h.area}</span>
-                    </div>
-                  </td>
-                  <td><strong>{h.phlebotomist}</strong></td>
-                  <td>{h.dispatcher}</td>
-                  <td>{h.time}</td>
-                  <td className="notes-cell">{h.notes || "—"}</td>
+          {loading ? (
+            <div className="p-xl text-center font-technical text-outline uppercase tracking-widest animate-pulse">Syncing Database...</div>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Operational Area</th>
+                  <th>Assigned Unit</th>
+                  <th>Status</th>
+                  <th>Timestamp</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredHistory.map((h) => (
+                  <tr key={h.id}>
+                    <td>
+                      <div className="area-cell">
+                        <span className="icon" style={{ fontSize: '14px' }}>location_on</span>
+                        <span>{h.patientArea}</span>
+                      </div>
+                    </td>
+                    <td><strong className="text-primary-container">{h.phlebName}</strong></td>
+                    <td>
+                      <span className={`status-badge ${h.status}`}>
+                        {h.status?.toUpperCase()}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="font-data text-[12px] opacity-70">
+                        {h.createdAt?.toDate ? new Date(h.createdAt.toDate()).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : "..."}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {filteredHistory.length === 0 && !loading && (
+                  <tr>
+                    <td colSpan={4} className="p-xl text-center opacity-30 italic">No historical records found for this query.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
-        <footer className="table-footer">
-          <span>Displaying 5 of 128 recorded entries</span>
-          <div className="pagination">
-            <button className="page-num active">01</button>
-            <button className="page-num">02</button>
-            <button className="page-num">03</button>
-            <span style={{ margin: '0 8px' }}>...</span>
-            <button className="page-num">24</button>
-          </div>
-        </footer>
+        {!loading && (
+          <footer className="table-footer">
+            <span>Displaying {filteredHistory.length} of {assignments.length} assignments</span>
+          </footer>
+        )}
       </section>
     </div>
   );

@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# HealthyCart Phlebotomist Dispatch System
+
+An internal web application for managing a home-sample-collection service. The application enables dispatchers to assign phlebotomists to patient locations efficiently using a tactical map interface.
+
+## Tech Stack
+- **Framework**: Next.js 14
+- **Database/Auth**: Firebase (Firestore & Auth)
+- **Maps**: Leaflet.js (Open-Source)
+- **Styling**: Tailwind CSS
+- **Storage**: Cloudinary
+
+## Core Features
+- **Tactical Dashboard**: Real-time monitoring of active phlebotomists and assignments.
+- **Quick Dispatch**: Rapid assignment entry from the main dashboard.
+- **Live Terminal**: Proximity-based dispatching using Haversine distance calculations.
+- **Phlebotomist Management**: CRUD operations with map-based base location selection and image uploads.
+- **Operational History**: Detailed logging and CSV export of all assignments.
 
 ## Getting Started
+1. Clone the repository.
+2. Install dependencies: `npm install`
+3. Set up environment variables in `.env.local` (see `.env.example`).
+4. Run the development server: `npm run dev`
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-First, run the development server:
+## Deployment Guide
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. Environment Variables
+Ensure the following variables are set in your hosting provider (Vercel/Netlify):
+- `NEXT_PUBLIC_FIREBASE_API_KEY`
+- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+- `NEXT_PUBLIC_FIREBASE_APP_ID`
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
+- `NEXT_PUBLIC_CLOUDINARY_PRESET`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Hosting (Vercel Recommended)
+1. Push your code to GitHub.
+2. Connect your repository to Vercel.
+3. Vercel will automatically detect the Next.js framework.
+4. Add the environment variables listed above.
+5. Deploy.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Maps Policy
+This system uses **Leaflet.js** and **CartoDB Dark Matter** tiles. It does not require a Google Maps or Mapbox API key, making it free to host and scale indefinitely.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
+*Built with HealthyCart Tactical Engine V6.2*
